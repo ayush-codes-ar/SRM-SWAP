@@ -67,7 +67,7 @@ const ProfileSetupPage = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 40 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 120 }}
+                transition={{ type: 'spring' as const, damping: 25, stiffness: 120 }}
                 className="w-full max-w-2xl bg-white border border-gray-100 p-16 rounded-[4.5rem] shadow-2xl shadow-gray-200/50 relative z-10"
             >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-bl-full -mr-32 -mt-32 transition-transform hover:scale-110 duration-1000" />

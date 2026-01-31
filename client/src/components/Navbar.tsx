@@ -37,7 +37,7 @@ const Navbar = () => {
         <motion.nav
             initial={{ y: -100 }}
             animate={{ y: 0 }}
-            transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+            transition={{ type: 'spring' as const, damping: 20, stiffness: 100 }}
             className="sticky top-0 w-full glass-morphism px-12 py-5 flex justify-between items-center z-50 border-white/5"
         >
             <Link to={user ? "/marketplace" : "/"} className="no-underline">

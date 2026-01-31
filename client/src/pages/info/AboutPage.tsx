@@ -26,7 +26,7 @@ const AboutPage = () => {
                         <motion.h1
                             initial={{ scale: 0.9, opacity: 0 }}
                             whileInView={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 1, type: 'spring' }}
+                            transition={{ duration: 1, type: 'spring' as const }}
                             className="text-7xl md:text-8xl font-black uppercase tracking-tighter text-black leading-none"
                         >
                             KNOW YOUR <span className="text-blue-600">COLLEGE</span>
