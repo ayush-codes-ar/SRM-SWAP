@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  MEMBER
+  ADMIN
+}
+
+enum ItemType {
+  SELL
+  LEND
+  BARTER
+}
+
+enum ItemStatus {
+  PENDING
+  VERIFIED
+  SOLD
+  REMOVED
+}
+
+enum TradeStatus {
+  NEGOTIATING
+  PROPOSED
+  ACCEPTED
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  UNDER_REVIEW // When an issue is raised
+}
+
+enum IssueStatus {
+  OPEN
+  PENDING
+  RESOLVED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(STUDENT)
+  isVerified   Boolean  @default(false)
+  trustScore   Int      @default(100)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  profile       Profile?
+  items         Item[]
+  sentOffers    Trade[]        @relation("BuyerTrades")
+  supervised    Trade[]        @relation("SupervisorTrades")
+  sentMessages  Message[]
+  notifications Notification[]
+  givenRatings  Rating[]       @relation("ReviewerRatings")
+  receivedRatings Rating[]     @relation("RevieweeRatings")
+  
+  reportedIssues    Issue[] @relation("ReporterIssues")
+  supervisedIssues  Issue[] @relation("SupervisorIssues")
+}
+
+model Profile {
+  id            String @id @default(uuid())
+  userId        String @unique
+  user          User   @relation(fields: [userId], references: [id])
+  fullName      String
+  regNumber     String @unique
+  phone         String?
+  hostelDetails String?
+  photoUrl      String?
+}
+
+enum MarketplaceType {
+  NORMAL
+  FRESHERS
+}
+
+model Item {
+  id          String          @id @default(uuid())
+  sellerId    String
+  seller      User            @relation(fields: [sellerId], references: [id])
+  title       String
+  description String
+  category    String
+  tags        String[]
+  type        ItemType
+  marketplace MarketplaceType @default(NORMAL)
+  price       Float?          // For SELL or partial
+  allowHybrid Boolean         @default(false)
+  images      String[]
+  status      ItemStatus      @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  trades Trade[]
+}
+
+model Trade {
+  id           String      @id @default(uuid())
+  listingId    String
+  listing      Item        @relation(fields: [listingId], references: [id])
+  buyerId      String
+  buyer        User        @relation("BuyerTrades", fields: [buyerId], references: [id])
+  supervisorId String?
+  supervisor   User?       @relation("SupervisorTrades", fields: [supervisorId], references: [id])
+  status       TradeStatus @default(NEGOTIATING)
+  location     String?
+  scheduledAt  DateTime?
+
+  // Deal Proposal details
+  moneyProposal      Float?
+  barterProposal     String?
+  commitmentProposal String?
+  proposerId         String?
+  supervisorNote     String?
+  
+  supervisorConfirmed Boolean     @default(false)
+  buyerFinished      Boolean     @default(false)
+  sellerFinished     Boolean     @default(false)
+
+  issues   Issue[]
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  messages Message[]
+  ratings  Rating[]
+}
+
+model Rating {
+  id           String      @id @default(uuid())
+  tradeId      String
+  trade        Trade       @relation(fields: [tradeId], references: [id])
+  reviewerId   String
+  reviewer     User        @relation("ReviewerRatings", fields: [reviewerId], references: [id])
+  revieweeId   String
+  reviewee     User        @relation("RevieweeRatings", fields: [revieweeId], references: [id])
+  accuracy     Int
+  honesty      Int
+  experience   Int
+  comment      String?
+  createdAt    DateTime    @default(now())
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  tradeId   String
+  trade     Trade    @relation(fields: [tradeId], references: [id])
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Issue {
+  id           String      @id @default(uuid())
+  tradeId      String
+  trade        Trade       @relation(fields: [tradeId], references: [id])
+  reporterId   String
+  reporter     User        @relation("ReporterIssues", fields: [reporterId], references: [id])
+  supervisorId String
+  supervisor   User        @relation("SupervisorIssues", fields: [supervisorId], references: [id])
+  description  String
+  status       IssueStatus @default(OPEN)
+  
+  buyerResolved  Boolean @default(false)
+  sellerResolved Boolean @default(false)
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}

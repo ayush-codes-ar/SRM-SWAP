@@ -1,0 +1,35 @@
+import { Router } from 'express';
+import multer from 'multer';
+import path from 'path';
+import { authenticateJWT } from '../middleware/authMiddleware';
+import { createItem, getItems, getItemById } from '../controllers/itemController';
+
+const router = Router();
+
+// Configure local storage for images
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
+
+const upload = multer({ storage });
+
+router.post('/', authenticateJWT, createItem);
+router.get('/', getItems);
+router.get('/:id', getItemById);
+
+// Upload endpoint
+router.post('/upload', authenticateJWT, upload.array('images', 5), (req, res) => {
+    const files = req.files as Express.Multer.File[];
+    if (!files) return res.status(400).json({ error: 'No files uploaded' });
+
+    // Return URLs (assuming server serves /uploads statically)
+    const urls = files.map(file => `/uploads/${file.filename}`);
+    res.json({ urls });
+});
+
+export default router;
