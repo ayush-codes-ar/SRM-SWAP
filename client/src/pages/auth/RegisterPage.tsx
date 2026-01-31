@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { User, Mail, Lock, ArrowRight, Loader2, BookOpen, Fingerprint, Sparkles, ChevronRight } from 'lucide-react';
 
 const RegisterPage = () => {
@@ -38,7 +38,7 @@ const RegisterPage = () => {
         }
     };
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -49,7 +49,7 @@ const RegisterPage = () => {
         }
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 20, opacity: 0 },
         visible: {
             y: 0,
@@ -131,7 +131,7 @@ const RegisterPage = () => {
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ type: 'spring', damping: 25, stiffness: 100, delay: 0.4 }}
+                    transition={{ type: 'spring' as const, damping: 25, stiffness: 100, delay: 0.4 }}
                     className="lg:col-span-5 w-full max-w-md mx-auto"
                 >
                     <div className="bg-white/80 backdrop-blur-2xl border border-white/20 p-10 rounded-[3.5rem] shadow-[0_32px_128px_-20px_rgba(0,0,0,0.5)]">
