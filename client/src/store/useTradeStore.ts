@@ -72,7 +72,7 @@ export const useTradeStore = create<TradeState>((set, get) => ({
     loading: false, // Initialize new state
 
     connectSocket: () => {
-        const socket = io('http://localhost:5000');
+        const socket = io();
         set({ socket });
 
         socket.on('receive_message', (message) => {

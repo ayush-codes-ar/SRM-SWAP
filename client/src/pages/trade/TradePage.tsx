@@ -117,7 +117,7 @@ const TradePage = () => {
                     <div className="aspect-square rounded-[3rem] overflow-hidden border border-gray-100 relative shadow-2xl">
                         {activeTrade.listing.images.length > 0 ? (
                             <img
-                                src={`http://localhost:5001${activeTrade.listing.images[0]}`}
+                                src={`${activeTrade.listing.images[0]}`}
                                 alt={activeTrade.listing.title}
                                 className="w-full h-full object-cover"
                             />

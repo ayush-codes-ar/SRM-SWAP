@@ -23,7 +23,7 @@ const LoginPage = () => {
             // For students, check if profile is complete
             if (role === 'STUDENT') {
                 try {
-                    const profileRes = await fetch('http://localhost:5001/api/user/profile', {
+                    const profileRes = await fetch('/api/user/profile', {
                         headers: {
                             'Authorization': `Bearer ${useAuthStore.getState().token}`
                         }

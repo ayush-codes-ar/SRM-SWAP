@@ -36,7 +36,7 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
                             hover: { scale: 1.1, filter: 'grayscale(0%)' }
                         }}
                         initial={{ filter: 'grayscale(40%)' }}
-                        src={`http://localhost:5001${item.images[0]}`}
+                        src={`${item.images[0]}`}
                         alt={item.title}
                         className="w-full h-full object-cover transition-all duration-700"
                     />
