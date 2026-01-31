@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, Lock, ShieldCheck, ArrowRight, Loader2, BookOpen, Fingerprint, Sparkles, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { User, Mail, Lock, ArrowRight, Loader2, BookOpen, Fingerprint, Sparkles, ChevronRight } from 'lucide-react';
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({

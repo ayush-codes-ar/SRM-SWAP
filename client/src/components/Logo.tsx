@@ -1,4 +1,4 @@
-import React from 'react';
+// React import removed (unused)
 
 const Logo = () => {
     return (

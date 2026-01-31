@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Shield, Share2, Zap, Info, ChevronRight, User, Lock, ArrowRight } from 'lucide-react';
 
 const LoginPage = () => {
@@ -71,7 +71,7 @@ const LoginPage = () => {
         visible: {
             y: 0,
             opacity: 1,
-            transition: { type: 'spring', damping: 25, stiffness: 120 }
+            transition: { type: 'spring' as const, damping: 25, stiffness: 120 }
         }
     };
 
