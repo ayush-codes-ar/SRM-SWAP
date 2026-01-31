@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '../utils/prismaClient';
 import { AuthRequest } from '../middleware/authMiddleware';
-import { io } from '../index';
+import { io } from '../../api/index';
 
 const TRADE_INCLUDE = {
     listing: { include: { seller: { include: { profile: true } } } },
