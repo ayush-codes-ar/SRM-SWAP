@@ -1,84 +1,131 @@
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, LayoutDashboard, PlusCircle, Home, Sparkles, Globe, LogOut } from 'lucide-react';
+import { ShoppingBag, LayoutDashboard, PlusCircle, Home as HomeIcon, Sparkles, Globe, LogOut, Info, Zap, HelpCircle } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
+import { motion, AnimatePresence } from 'framer-motion';
+import Logo from './Logo';
 
 const Navbar = () => {
     const { user } = useAuthStore();
     const location = useLocation();
 
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+    const showLandingNav = !user || isAuthPage;
+
     const isActive = (path: string) => location.pathname === path;
 
+    // Navigation for Authenticated Users
+    const authenticatedItems = [
+        { path: '/marketplace', label: 'Market', icon: <ShoppingBag size={18} />, activeColor: 'text-cyan-400' },
+        { path: '/create-listing', label: 'Sell', icon: <PlusCircle size={18} />, activeColor: 'text-cyan-400' },
+        { path: '/student', label: 'Dash', icon: <LayoutDashboard size={18} />, activeColor: 'text-cyan-400' },
+        { path: '/freshers', label: 'Freshers', icon: <Sparkles size={18} />, activeColor: 'text-cyan-400' },
+        { path: '/about', label: 'Know Your College', icon: <Globe size={18} />, activeColor: 'text-blue-400' },
+    ];
+
+    // Navigation for Landing / Auth Pages
+    const landingItems = [
+        { path: '/', label: 'Home', icon: <HomeIcon size={18} /> },
+        { path: '/about', label: 'About', icon: <Info size={18} /> },
+        { path: '/how-it-works', label: 'How it works', icon: <Zap size={18} /> },
+        { path: '/features', label: 'Features', icon: <Sparkles size={18} /> },
+        { path: '/faq', label: 'FAQ', icon: <HelpCircle size={18} /> },
+    ];
+
+    const currentNavItems = showLandingNav ? landingItems : authenticatedItems;
+
     return (
-        <nav className="sticky top-0 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 px-8 py-4 flex justify-between items-center z-50">
-            <Link to="/marketplace" className="flex items-center gap-2 group">
-                <div className="w-10 h-10 bg-gradient-to-tr from-cyan-400 to-purple-500 rounded-xl flex items-center justify-center font-black text-black scale-90 group-hover:scale-100 transition">S</div>
-                <span className="text-xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent uppercase tracking-tighter">SRM Swap</span>
+        <motion.nav
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+            className="sticky top-0 w-full glass-morphism px-12 py-5 flex justify-between items-center z-50 border-white/5"
+        >
+            <Link to={user ? "/marketplace" : "/"} className="no-underline">
+                <Logo />
             </Link>
 
-            <div className="flex items-center gap-8">
-                <Link to="/marketplace" className={`flex items-center gap-2 transition-colors ${isActive('/marketplace') ? 'text-cyan-400' : 'text-gray-400 hover:text-white'}`}>
-                    <ShoppingBag size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest hidden md:block">Market</span>
-                </Link>
-
-                <Link to="/create-listing" className={`flex items-center gap-2 transition-colors ${isActive('/create-listing') ? 'text-cyan-400' : 'text-gray-400 hover:text-white'}`}>
-                    <PlusCircle size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest hidden md:block">Sell</span>
-                </Link>
-
-                <Link to="/dashboard" className={`flex items-center gap-2 transition-colors ${isActive('/dashboard') || isActive('/student') ? 'text-cyan-400' : 'text-gray-400 hover:text-white'}`}>
-                    <LayoutDashboard size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest hidden md:block">Dash</span>
-                </Link>
-
-                <Link to="/freshers" className={`flex items-center gap-2 transition-colors ${isActive('/freshers') ? 'text-cyan-400' : 'text-gray-400 hover:text-white'}`}>
-                    <Sparkles size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest hidden lg:block">Freshers</span>
-                </Link>
-
-                <Link to="/about" className={`flex items-center gap-2 transition-colors ${isActive('/about') ? 'text-purple-400' : 'text-gray-400 hover:text-white'}`}>
-                    <Globe size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest hidden lg:block">Know Your College</span>
-                </Link>
-
-                {user?.role === 'MEMBER' && (
-                    <Link to="/member" className={`flex items-center gap-2 transition-colors ${isActive('/member') ? 'text-yellow-400' : 'text-gray-400 hover:text-white'}`}>
-                        <Home size={18} />
-                        <span className="text-xs font-bold uppercase tracking-widest hidden md:block">Super</span>
+            <div className="flex items-center gap-10">
+                {currentNavItems.map((item) => (
+                    <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`group relative flex items-center gap-2 transition-all duration-500 ${isActive(item.path) ? (showLandingNav ? 'text-blue-600' : (item as any).activeColor.replace('400', '600')) : 'text-gray-400 hover:text-black'}`}
+                    >
+                        <motion.div
+                            whileHover={{ y: -2, scale: 1.1 }}
+                            className="flex items-center gap-2"
+                        >
+                            {item.icon}
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] hidden md:block">{item.label}</span>
+                        </motion.div>
+                        <AnimatePresence>
+                            {isActive(item.path) && (
+                                <motion.div
+                                    layoutId="nav-active"
+                                    className={`absolute -bottom-8 left-0 right-0 h-1 rounded-full ${showLandingNav ? 'bg-blue-400' : (item as any).activeColor.replace('text', 'bg')}`}
+                                />
+                            )}
+                        </AnimatePresence>
                     </Link>
-                )}
+                ))}
 
-                {user?.role === 'ADMIN' && (
-                    <Link to="/admin" className={`flex items-center gap-2 transition-colors ${isActive('/admin') ? 'text-red-500' : 'text-gray-400 hover:text-white'}`}>
-                        <Home size={18} />
-                        <span className="text-xs font-bold uppercase tracking-widest hidden md:block">Admin</span>
+                {!showLandingNav && user?.role === 'MEMBER' && (
+                    <Link to="/member" className={`flex items-center gap-2 transition-colors ${isActive('/member') ? 'text-yellow-600' : 'text-gray-400 hover:text-black'}`}>
+                        <HomeIcon size={18} />
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] hidden md:block">Super</span>
                     </Link>
                 )}
             </div>
 
-            <div className="flex items-center gap-4">
-                {user && (
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-3 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
-                            <div className="w-6 h-6 rounded-full bg-cyan-500 flex items-center justify-center text-black font-bold text-[10px]">
+            <div className="flex items-center gap-6">
+                {user ? (
+                    <div className="flex items-center gap-6">
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="flex items-center gap-3 bg-white px-4 py-2 rounded-full border border-gray-100 hover:border-blue-500/30 transition-colors"
+                        >
+                            <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-black text-[10px]">
                                 {user.email[0].toUpperCase()}
                             </div>
-                            <span className="text-xs font-medium text-gray-300 hidden sm:block">{user.email.split('@')[0]}</span>
-                        </div>
-                        <button
+                            <span className="text-[10px] font-black text-gray-600 hidden sm:block uppercase tracking-widest">{user.email.split('@')[0]}</span>
+                        </motion.div>
+                        <motion.button
+                            whileHover={{ scale: 1.1, rotate: 90 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={() => {
                                 useAuthStore.getState().logout();
                                 window.location.href = '/login';
                             }}
-                            className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+                            className="p-3 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-2xl transition-all"
                             title="Logout"
                         >
-                            <LogOut size={18} />
-                        </button>
+                            <LogOut size={20} />
+                        </motion.button>
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-4">
+                        <Link to="/login">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${location.pathname === '/login' ? 'bg-white text-black' : 'text-gray-400 hover:text-white border border-white/10 hover:border-white/20'}`}
+                            >
+                                Login
+                            </motion.button>
+                        </Link>
+                        <Link to="/register">
+                            <motion.button
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-xl ${location.pathname === '/register' ? 'bg-blue-600 text-white shadow-blue-600/20' : 'bg-white text-black shadow-white/10 hover:bg-blue-600 hover:text-white'}`}
+                            >
+                                Register
+                            </motion.button>
+                        </Link>
                     </div>
                 )}
             </div>
-        </nav>
+        </motion.nav>
     );
 };
 

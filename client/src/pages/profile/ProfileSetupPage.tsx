@@ -38,76 +38,111 @@ const ProfileSetupPage = () => {
         }
     };
 
-    if (loading) return <div className="text-white text-center mt-20">Loading profile...</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="animate-pulse text-blue-600 font-black uppercase tracking-[0.2em] text-sm">Accessing Profile Nexus...</div>
+        </div>
+    );
 
     return (
-        <div className="min-h-screen bg-black text-white p-6 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 text-black p-10 flex items-center justify-center relative overflow-hidden">
+            {/* Ambient storytelling elements */}
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-2xl bg-white/5 border border-white/10 p-8 rounded-3xl"
-            >
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-2">
-                    Complete Your Profile
-                </h1>
-                <p className="text-gray-400 mb-8">One last step before you enter the marketplace.</p>
+                animate={{
+                    scale: [1, 1.1, 1],
+                    x: [0, 30, 0],
+                }}
+                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                className="absolute top-20 right-20 w-80 h-80 bg-blue-600/5 rounded-full blur-3xl"
+            />
+            <motion.div
+                animate={{
+                    scale: [1, 1.2, 1],
+                    x: [0, -30, 0],
+                }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                className="absolute bottom-20 left-20 w-96 h-96 bg-gray-100/50 rounded-full blur-3xl"
+            />
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-500 mb-1">Full Name (Read-only)</label>
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 40 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 120 }}
+                className="w-full max-w-2xl bg-white border border-gray-100 p-16 rounded-[4.5rem] shadow-2xl shadow-gray-200/50 relative z-10"
+            >
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-bl-full -mr-32 -mt-32 transition-transform hover:scale-110 duration-1000" />
+
+                <div className="relative mb-12">
+                    <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: '4rem' }}
+                        className="h-2 bg-blue-600 rounded-full mb-6"
+                    />
+                    <h1 className="text-6xl font-black text-black uppercase tracking-tighter leading-[0.9]">
+                        INITIALIZE <br />
+                        <span className="text-blue-600">PROFILE</span>
+                    </h1>
+                    <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em] mt-6">Secure your identity within the SRM Hub.</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div className="space-y-3">
+                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Inhabitant Name</label>
                             <input
                                 value={profile?.fullName || ''}
                                 disabled
-                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-gray-400 cursor-not-allowed"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-[2rem] p-5 text-gray-400 font-bold text-sm cursor-not-allowed shadow-inner"
                             />
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-500 mb-1">Registration Number (Read-only)</label>
+                        <div className="space-y-3">
+                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Registry ID</label>
                             <input
                                 value={profile?.user?.email?.split('@')[0].toUpperCase() || ''}
                                 disabled
-                                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-gray-400 cursor-not-allowed"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-[2rem] p-5 text-gray-400 font-bold text-sm cursor-not-allowed shadow-inner"
                             />
                         </div>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-1">Phone Number</label>
+                    <div className="space-y-3">
+                        <label className="block text-[10px] font-black text-black uppercase tracking-widest ml-4">COMMUNICATION LINK (PHONE)</label>
                         <input
                             type="tel"
                             placeholder="+91 XXXXX XXXXX"
                             value={formData.phone}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-green-500 transition-colors"
+                            className="w-full bg-gray-50 border border-gray-100 rounded-[2rem] p-5 text-black font-bold focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all outline-none shadow-sm"
                             required
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-1">Hostel Name & Room Number</label>
+                    <div className="space-y-3">
+                        <label className="block text-[10px] font-black text-black uppercase tracking-widest ml-4">DORM COORDINATES (HOSTEL/ROOM)</label>
                         <input
                             type="text"
                             placeholder="e.g. Kaveri, 304"
                             value={formData.hostelDetails}
                             onChange={(e) => setFormData({ ...formData, hostelDetails: e.target.value })}
-                            className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-green-500 transition-colors"
+                            className="w-full bg-gray-50 border border-gray-100 rounded-[2rem] p-5 text-black font-bold focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all outline-none shadow-sm"
                             required
                         />
                     </div>
 
-                    <FileUpload label="Profile Photo" onChange={(file) => {
-                        // Mock upload for now
-                        if (file) setFormData({ ...formData, photoUrl: URL.createObjectURL(file) })
-                    }} />
+                    <div className="pt-4">
+                        <FileUpload label="Registry Identification (Photo)" onChange={(file) => {
+                            if (file) setFormData({ ...formData, photoUrl: URL.createObjectURL(file) })
+                        }} />
+                    </div>
 
                     <motion.button
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{ scale: 1.02, y: -5 }}
                         whileTap={{ scale: 0.98 }}
                         type="submit"
-                        className="w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-xl font-bold text-lg shadow-lg shadow-emerald-900/20 transition-all"
+                        className="w-full bg-black text-white py-6 rounded-[3rem] font-black uppercase tracking-[0.2em] text-xs shadow-2xl shadow-black/10 hover:bg-blue-600 transition-all flex items-center justify-center gap-6 group"
                     >
-                        Save & Continue
+                        COMPLETE ONBOARDING
+                        <span className="group-hover:translate-x-3 transition-transform text-lg">→</span>
                     </motion.button>
                 </form>
             </motion.div>

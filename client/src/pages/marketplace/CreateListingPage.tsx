@@ -43,19 +43,19 @@ const CreateListingPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white p-6 flex justify-center">
+        <div className="min-h-screen bg-gray-50 text-black p-6 flex justify-center">
             <div className="w-full max-w-2xl">
                 <h1 className="text-3xl font-bold mb-6">List Item</h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label className="block text-gray-400 text-sm mb-1">Title</label>
-                        <input className="w-full bg-white/5 p-3 rounded-lg border border-white/10" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
+                        <input className="w-full bg-white p-3 rounded-lg border border-gray-200" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-gray-400 text-sm mb-1">Type</label>
-                            <select className="w-full bg-white/5 p-3 rounded-lg border border-white/10 [&>option]:text-black" value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })}>
+                            <select className="w-full bg-white p-3 rounded-lg border border-gray-200" value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })}>
                                 <option value="SELL">Sell</option>
                                 <option value="LEND">Lend</option>
                                 <option value="BARTER">Barter</option>
@@ -63,7 +63,7 @@ const CreateListingPage = () => {
                         </div>
                         <div>
                             <label className="block text-gray-400 text-sm mb-1">Price (₹)</label>
-                            <input type="number" className="w-full bg-white/5 p-3 rounded-lg border border-white/10" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
+                            <input type="number" className="w-full bg-white p-3 rounded-lg border border-gray-200" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
                         </div>
                     </div>
 
@@ -73,14 +73,14 @@ const CreateListingPage = () => {
                             <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, marketplace: 'NORMAL' })}
-                                className={`py-3 rounded-lg border font-bold transition ${formData.marketplace === 'NORMAL' ? 'bg-cyan-500 border-cyan-500 text-black' : 'bg-white/5 border-white/10 text-gray-400'}`}
+                                className={`py-3 rounded-lg border font-bold transition ${formData.marketplace === 'NORMAL' ? 'bg-cyan-500 border-cyan-500 text-black' : 'bg-white border-gray-200 text-gray-500'}`}
                             >
                                 General Market
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, marketplace: 'FRESHERS' })}
-                                className={`py-3 rounded-lg border font-bold transition ${formData.marketplace === 'FRESHERS' ? 'bg-cyan-500 border-cyan-500 text-black' : 'bg-white/5 border-white/10 text-gray-400'}`}
+                                className={`py-3 rounded-lg border font-bold transition ${formData.marketplace === 'FRESHERS' ? 'bg-cyan-500 border-cyan-500 text-black' : 'bg-white border-gray-200 text-gray-500'}`}
                             >
                                 Freshers Only
                             </button>
@@ -89,7 +89,7 @@ const CreateListingPage = () => {
 
                     <div>
                         <label className="block text-gray-400 text-sm mb-1">Category</label>
-                        <select className="w-full bg-white/5 p-3 rounded-lg border border-white/10 [&>option]:text-black" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} required>
+                        <select className="w-full bg-white p-3 rounded-lg border border-gray-200" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} required>
                             <option value="">Select Category</option>
                             {formData.marketplace === 'NORMAL' ? (
                                 <>
@@ -114,12 +114,12 @@ const CreateListingPage = () => {
 
                     <div>
                         <label className="block text-gray-400 text-sm mb-1">Description</label>
-                        <textarea className="w-full bg-white/5 p-3 rounded-lg border border-white/10 h-32" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} required />
+                        <textarea className="w-full bg-white p-3 rounded-lg border border-gray-200 h-32" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} required />
                     </div>
 
                     <div>
                         <label className="block text-gray-400 text-sm mb-1">Tags (comma separated)</label>
-                        <input className="w-full bg-white/5 p-3 rounded-lg border border-white/10" placeholder="cricket, bat, sports" value={formData.tags} onChange={e => setFormData({ ...formData, tags: e.target.value })} />
+                        <input className="w-full bg-white p-3 rounded-lg border border-gray-200" placeholder="cricket, bat, sports" value={formData.tags} onChange={e => setFormData({ ...formData, tags: e.target.value })} />
                     </div>
 
                     <FileUpload label="Upload Images" onChange={(file) => {

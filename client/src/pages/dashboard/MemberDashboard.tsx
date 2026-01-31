@@ -61,31 +61,31 @@ const MemberDashboard = () => {
     const NavButton = ({ target, label, icon: Icon }: { target: DashboardView, label: string, icon: any }) => (
         <button
             onClick={() => setView(target)}
-            className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all ${view === target ? 'bg-cyan-500 text-black shadow-lg shadow-cyan-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}
+            className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 ${view === target ? 'bg-black text-white shadow-xl' : 'text-gray-400 hover:bg-gray-50 hover:text-black'}`}
         >
             <Icon size={20} />
-            <span className="text-xs font-black uppercase tracking-widest">{label}</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
         </button>
     );
 
     return (
-        <div className="min-h-screen bg-black text-white flex">
+        <div className="min-h-screen bg-gray-50 text-black flex">
             {/* Sidebar */}
-            <aside className="w-80 border-r border-white/10 p-6 flex flex-col gap-2 sticky top-0 h-screen">
+            <aside className="w-80 border-r border-gray-100 bg-white p-6 flex flex-col gap-2 sticky top-0 h-screen shadow-sm z-50">
                 <div className="mb-10 px-6">
-                    <h2 className="text-2xl font-black italic tracking-tighter text-cyan-400">SRM SWAP</h2>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Supervisor Terminal</p>
+                    <h2 className="text-2xl font-black italic tracking-tighter text-blue-600">SRM SWAP</h2>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Supervisor Terminal</p>
                 </div>
 
                 <div className="space-y-1">
-                    <p className="px-6 text-[10px] font-black uppercase text-gray-600 mb-2">Market Management</p>
+                    <p className="px-6 text-[10px] font-black uppercase text-gray-300 mb-2">Market Management</p>
                     <NavButton target="PENDING_DEALS" label="Pending Deals" icon={Clock} />
                     <NavButton target="APPROVED_DEALS" label="Approved Deals" icon={BadgeCheck} />
                     <NavButton target="COMPLETED_DEALS" label="Closed Archive" icon={CheckCircle} />
                 </div>
 
                 <div className="mt-8 space-y-1">
-                    <p className="px-6 text-[10px] font-black uppercase text-gray-600 mb-2">Conflict Resolution</p>
+                    <p className="px-6 text-[10px] font-black uppercase text-gray-300 mb-2">Conflict Resolution</p>
                     <NavButton target="NEW_ISSUES" label="New Issues" icon={ShieldAlert} />
                     <NavButton target="PENDING_ISSUES" label="Pending Resolution" icon={MessageSquare} />
                     <NavButton target="SOLVED_ISSUES" label="Solved List" icon={CheckCircle} />
@@ -95,7 +95,7 @@ const MemberDashboard = () => {
                     <NavButton target="PROFILE" label="My Profile" icon={User} />
                     <button
                         onClick={() => { useAuthStore.getState().logout(); window.location.href = '/login'; }}
-                        className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-400 hover:bg-red-500/10 transition-all uppercase tracking-widest font-black text-xs"
+                        className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500 hover:bg-red-50 transition-all uppercase tracking-widest font-black text-xs"
                     >
                         <LogOut size={20} />
                         <span>Logout</span>
@@ -104,11 +104,11 @@ const MemberDashboard = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 p-12 overflow-y-auto">
-                <header className="mb-12 flex justify-between items-end">
+            <main className="flex-1 p-16 overflow-y-auto bg-gray-50/30">
+                <header className="mb-16 flex justify-between items-end">
                     <div>
-                        <h1 className="text-5xl font-black uppercase tracking-tighter text-white">{view.replace('_', ' ')}</h1>
-                        <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mt-2">Active session: {user?.email}</p>
+                        <h1 className="text-6xl font-black uppercase tracking-tighter text-black">{view.replace('_', ' ')}</h1>
+                        <p className="text-gray-400 text-xs font-black uppercase tracking-widest mt-2 px-1">Active session: {user?.email}</p>
                     </div>
                 </header>
 
@@ -117,33 +117,33 @@ const MemberDashboard = () => {
                 ) : (
                     <div className="grid gap-6">
                         {view.includes('DEAL') && trades.map(trade => (
-                            <div key={trade.id} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] flex justify-between items-center group hover:border-cyan-500/20 transition-all">
+                            <div key={trade.id} className="bg-white border border-gray-100 p-8 rounded-[2.5rem] flex justify-between items-center group hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500">
                                 <div className="space-y-4">
-                                    <h3 className="text-2xl font-black uppercase tracking-tighter">{trade.listing.title}</h3>
-                                    <div className="flex gap-4 text-xs font-bold text-gray-400 uppercase">
-                                        <span>B: {trade.buyer.profile.fullName}</span>
-                                        <span className="text-gray-600">|</span>
-                                        <span>S: {trade.listing.seller.profile.fullName}</span>
+                                    <h3 className="text-3xl font-black uppercase tracking-tighter text-black">{trade.listing.title}</h3>
+                                    <div className="flex gap-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                        <span className="flex items-center gap-2"><User size={12} className="text-blue-600" /> BUYER: {trade.buyer.profile.fullName}</span>
+                                        <span className="text-gray-100">|</span>
+                                        <span className="flex items-center gap-2"><User size={12} className="text-black" /> SELLER: {trade.listing.seller.profile.fullName}</span>
                                     </div>
-                                    <div className="flex gap-6 mt-4 p-4 bg-black/40 rounded-2xl border border-white/5 text-xs">
-                                        <div className="flex items-center gap-2"><MapPin size={14} className="text-cyan-400" /> {trade.location || 'TBD'}</div>
-                                        <div className="flex items-center gap-2 border-l border-white/10 pl-6"><Calendar size={14} className="text-purple-400" /> {trade.scheduledAt ? new Date(trade.scheduledAt).toLocaleString() : 'TBD'}</div>
+                                    <div className="flex gap-8 mt-6 p-6 bg-gray-50 rounded-[2rem] border border-gray-100 text-[10px] font-black uppercase tracking-widest">
+                                        <div className="flex items-center gap-3"><MapPin size={16} className="text-blue-600" /> {trade.location || 'TBD'}</div>
+                                        <div className="flex items-center gap-3 border-l border-gray-200 pl-8"><Calendar size={16} className="text-black" /> {trade.scheduledAt ? new Date(trade.scheduledAt).toLocaleString() : 'TBD'}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4">
                                     {view === 'PENDING_DEALS' && (
-                                        <button onClick={() => { setSelectedTrade(trade); setShowSchedule(true); }} className="bg-cyan-500 text-black px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs">Verify & Schedule</button>
+                                        <button onClick={() => { setSelectedTrade(trade); setShowSchedule(true); }} className="bg-blue-600 text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-xs shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all">Verify & Schedule</button>
                                     )}
                                     {view === 'APPROVED_DEALS' && (
                                         <>
                                             {trade.supervisorConfirmed ? (
-                                                <button disabled className="bg-white/10 text-gray-500 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs cursor-not-allowed border border-white/5 flex items-center gap-2">
-                                                    <Clock size={14} className="animate-pulse" />
-                                                    Waiting for User Approval
+                                                <button disabled className="bg-gray-100 text-gray-400 px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-[10px] cursor-not-allowed border border-gray-100 flex items-center gap-3">
+                                                    <Clock size={16} className="animate-pulse" />
+                                                    Waiting for User Seal
                                                 </button>
                                             ) : (
-                                                <button onClick={() => handleMarkDone(trade.id)} className="bg-emerald-500 text-black px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-all shadow-lg shadow-emerald-500/20">
-                                                    🤝 Deal Done
+                                                <button onClick={() => handleMarkDone(trade.id)} className="bg-black text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-xs hover:bg-blue-600 transition-all shadow-xl shadow-black/10">
+                                                    🤝 Execute Closure
                                                 </button>
                                             )}
                                         </>
@@ -158,30 +158,32 @@ const MemberDashboard = () => {
                         ))}
 
                         {view.includes('ISSUE') && issues.map(issue => (
-                            <div key={issue.id} className="bg-white/5 border border-white/10 p-8 rounded-[2rem] space-y-6">
+                            <div key={issue.id} className="bg-white border-2 border-red-50 p-8 rounded-[2.5rem] space-y-6 shadow-sm relative overflow-hidden">
+                                <div className="absolute top-0 right-0 bg-red-500 text-white px-6 py-2 rounded-bl-3xl font-black text-[10px] uppercase tracking-widest">Urgent Dispute</div>
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <h3 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-3">
-                                            <AlertCircle className="text-red-500" /> {issue.trade.listing.title} Dispute
+                                        <h3 className="text-3xl font-black uppercase tracking-tighter text-black flex items-center gap-3">
+                                            <AlertCircle className="text-red-500" /> {issue.trade.listing.title}
                                         </h3>
-                                        <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Reported by: {issue.reporter.profile.fullName}</p>
+                                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1 px-1">Reporter: {issue.reporter.profile.fullName}</p>
                                     </div>
-                                    <span className="bg-red-500/10 text-red-400 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-red-500/20">{issue.status}</span>
                                 </div>
-                                <p className="text-gray-400 italic font-medium">"{issue.description}"</p>
+                                <div className="p-6 bg-red-50/50 rounded-2xl italic border border-red-100">
+                                    <p className="text-gray-600 font-bold leading-relaxed">"{issue.description}"</p>
+                                </div>
                                 <div className="flex gap-4">
                                     {view === 'NEW_ISSUES' && (
-                                        <button onClick={() => handleClaimIssue(issue.id)} className="bg-red-500 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs">Take Issue</button>
+                                        <button onClick={() => handleClaimIssue(issue.id)} className="bg-red-600 text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-xs shadow-lg shadow-red-500/20">Intercept Issue</button>
                                     )}
                                     {view === 'PENDING_ISSUES' && (
-                                        <div className="w-full space-y-4">
-                                            <div className="flex gap-2">
-                                                <div className={`p-2 rounded flex-1 text-center text-[10px] font-black ${issue.trade.buyerFinished ? 'bg-emerald-500 text-black' : 'bg-white/5 text-gray-600'}`}>Buyer Resolved</div>
-                                                <div className={`p-2 rounded flex-1 text-center text-[10px] font-black ${issue.trade.sellerFinished ? 'bg-emerald-500 text-black' : 'bg-white/5 text-gray-600'}`}>Seller Resolved</div>
-                                            </div>
+                                        <div className="w-full space-y-6">
                                             <div className="flex gap-3">
-                                                <button onClick={() => window.location.href = `/trade/${issue.tradeId}`} className="flex-1 bg-white/10 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs border border-white/10 hover:bg-white/20 transition">Join Chat</button>
-                                                <button onClick={() => handleFinalizeIssue(issue.id)} className="flex-[2] bg-cyan-500 text-black py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-cyan-500/20">Finalize Resolution</button>
+                                                <div className={`py-3 px-6 rounded-full flex-1 text-center text-[9px] font-black uppercase tracking-widest ${issue.trade.buyerFinished ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/10' : 'bg-gray-100 text-gray-300'}`}>Buyer Resolved</div>
+                                                <div className={`py-3 px-6 rounded-full flex-1 text-center text-[9px] font-black uppercase tracking-widest ${issue.trade.sellerFinished ? 'bg-black text-white shadow-lg shadow-black/10' : 'bg-gray-100 text-gray-300'}`}>Seller Resolved</div>
+                                            </div>
+                                            <div className="flex gap-4">
+                                                <button onClick={() => window.location.href = `/trade/${issue.tradeId}`} className="flex-1 bg-white text-black py-5 rounded-[2rem] font-black uppercase tracking-widest text-xs border border-gray-100 hover:bg-gray-50 transition-all shadow-sm">Join Resolution Hub</button>
+                                                <button onClick={() => handleFinalizeIssue(issue.id)} className="flex-[1.5] bg-blue-600 text-white py-5 rounded-[2rem] font-black uppercase tracking-widest text-xs shadow-xl shadow-blue-500/20">Finalize Closure</button>
                                             </div>
                                         </div>
                                     )}
@@ -200,22 +202,23 @@ const MemberDashboard = () => {
                         ))}
 
                         {view === 'PROFILE' && (
-                            <div className="bg-white/5 border border-white/10 p-12 rounded-[3rem] text-center space-y-6">
-                                <div className="w-24 h-24 bg-cyan-500 rounded-full mx-auto flex items-center justify-center text-4xl font-black text-black">
-                                    {user?.email?.[0] || 'A'}
+                            <div className="bg-white border border-gray-100 p-16 rounded-[4rem] text-center space-y-8 shadow-xl relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-bl-full -mr-32 -mt-32 transition-transform group-hover:scale-110" />
+                                <div className="w-32 h-32 bg-black rounded-full mx-auto flex items-center justify-center text-5xl font-black text-white border-8 border-gray-50 shadow-2xl relative z-10">
+                                    {user?.email?.[0].toUpperCase() || 'A'}
                                 </div>
-                                <div>
-                                    <h2 className="text-3xl font-black uppercase tracking-tighter">{user?.email}</h2>
-                                    <p className="text-cyan-400 font-bold uppercase text-[10px] tracking-widest">SRM Swap Official Member</p>
+                                <div className="relative z-10">
+                                    <h2 className="text-4xl font-black uppercase tracking-tighter text-black">{user?.email.split('@')[0]}</h2>
+                                    <p className="text-blue-600 font-black uppercase text-[10px] tracking-widest mt-2 bg-blue-50 inline-block px-4 py-1.5 rounded-full">SRM Swap Official Member</p>
                                 </div>
-                                <div className="pt-8 border-t border-white/5 grid grid-cols-2 gap-4">
-                                    <div className="bg-white/5 p-6 rounded-3xl">
-                                        <p className="text-[10px] font-black uppercase text-gray-500 mb-1">Status</p>
-                                        <p className="text-emerald-400 font-black uppercase">Active</p>
+                                <div className="pt-12 border-t border-gray-50 grid grid-cols-2 gap-8 relative z-10">
+                                    <div className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
+                                        <p className="text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Status</p>
+                                        <p className="text-emerald-500 font-black uppercase tracking-widest">Active Duty</p>
                                     </div>
-                                    <div className="bg-white/5 p-6 rounded-3xl">
-                                        <p className="text-[10px] font-black uppercase text-gray-500 mb-1">Clearance</p>
-                                        <p className="text-purple-400 font-black uppercase">Level 1</p>
+                                    <div className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
+                                        <p className="text-[10px] font-black uppercase text-gray-400 mb-2 tracking-widest">Clearance</p>
+                                        <p className="text-blue-600 font-black uppercase tracking-widest">Level 1</p>
                                     </div>
                                 </div>
                             </div>

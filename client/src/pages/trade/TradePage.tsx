@@ -91,8 +91,8 @@ const TradePage = () => {
     };
 
     if (!activeTrade) return (
-        <div className="min-h-screen bg-black flex items-center justify-center">
-            <div className="animate-pulse text-cyan-400 font-black text-2xl uppercase tracking-[0.2em]">Dialing Signal...</div>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="animate-pulse text-blue-600 font-black text-2xl uppercase tracking-[0.2em]">Dialing Signal...</div>
         </div>
     );
 
@@ -103,9 +103,9 @@ const TradePage = () => {
     const isUserFinished = isSeller ? activeTrade.sellerFinished : activeTrade.buyerFinished;
 
     return (
-        <div className="h-[calc(100vh-88px)] bg-black text-white flex flex-col lg:flex-row overflow-hidden">
+        <div className="h-[calc(100vh-88px)] bg-gray-50 text-black flex flex-col lg:flex-row overflow-hidden">
             {/* Left Column: Item + Seller Details */}
-            <div className="w-full lg:w-1/3 border-r border-white/10 bg-gradient-to-b from-gray-900/50 to-black overflow-y-auto custom-scrollbar">
+            <div className="w-full lg:w-1/3 border-r border-gray-100 bg-gray-50/50 overflow-y-auto custom-scrollbar">
                 <div className="p-6 space-y-8">
                     {/* Back Button */}
                     <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-400 hover:text-white transition group">
@@ -114,44 +114,44 @@ const TradePage = () => {
                     </button>
 
                     {/* Item Image */}
-                    <div className="aspect-square rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
+                    <div className="aspect-square rounded-[3rem] overflow-hidden border border-gray-100 relative shadow-2xl">
                         {activeTrade.listing.images.length > 0 ? (
                             <img
-                                src={`http://localhost:5000${activeTrade.listing.images[0]}`}
+                                src={`http://localhost:5001${activeTrade.listing.images[0]}`}
                                 alt={activeTrade.listing.title}
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <div className="w-full h-full bg-white/5 flex items-center justify-center text-gray-500">No Image</div>
+                            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 font-black uppercase tracking-widest text-xs">No Visuals</div>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                            <h1 className="text-3xl font-black uppercase tracking-tighter leading-none">{activeTrade.listing.title}</h1>
-                            <p className="text-cyan-400 font-bold text-lg mt-1">{activeTrade.listing.price ? `₹${activeTrade.listing.price}` : 'Trade Proposal'}</p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
+                            <h1 className="text-3xl font-black uppercase tracking-tighter leading-none text-white">{activeTrade.listing.title}</h1>
+                            <p className="text-blue-400 font-bold text-lg mt-1">{activeTrade.listing.price ? `₹${activeTrade.listing.price}` : 'Trade Proposal'}</p>
                         </div>
                     </div>
 
                     {/* Participants Card (Supervisor Version) */}
                     {isSupervisor ? (
-                        <div className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-4">
-                            <h3 className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Participants</h3>
+                        <div className="bg-white border border-gray-100 rounded-3xl p-6 space-y-4 shadow-sm">
+                            <h3 className="text-gray-400 text-[10px] font-black uppercase tracking-widest">Participants</h3>
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-cyan-500 flex items-center justify-center text-black font-black text-xs">B</div>
-                                <span className="text-sm font-bold">{activeTrade.buyer.profile.fullName}</span>
+                                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-xs">B</div>
+                                <span className="text-sm font-bold text-black">{activeTrade.buyer.profile.fullName}</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center text-black font-black text-xs">S</div>
-                                <span className="text-sm font-bold">{activeTrade.listing.seller.profile.fullName}</span>
+                                <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white font-black text-xs">S</div>
+                                <span className="text-sm font-bold text-black">{activeTrade.listing.seller.profile.fullName}</span>
                             </div>
                         </div>
                     ) : (
-                        <div className="bg-white/5 border border-white/10 rounded-3xl p-6 relative">
-                            <h3 className="text-gray-500 text-[10px] font-black uppercase tracking-widest mb-4">Trading Partner</h3>
+                        <div className="bg-white border border-gray-100 rounded-3xl p-6 relative shadow-sm">
+                            <h3 className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-4">Trading Partner</h3>
                             <div className="flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-2xl bg-cyan-500 flex items-center justify-center text-black font-black text-xl">
+                                <div className="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-xl">
                                     {partner?.profile?.fullName?.[0]}
                                 </div>
                                 <div>
-                                    <p className="text-xl font-bold">{partner?.profile?.fullName}</p>
+                                    <p className="text-xl font-bold text-black">{partner?.profile?.fullName}</p>
                                 </div>
                             </div>
                         </div>
@@ -207,37 +207,44 @@ const TradePage = () => {
             </div>
 
             {/* Right Column: Chat Hub */}
-            <div className="flex-1 flex flex-col bg-black relative">
-                <header className="px-8 py-5 border-b border-white/10 flex justify-between items-center">
-                    <h2 className="text-lg font-black uppercase tracking-tighter">Swap Chat</h2>
+            <div className="flex-1 flex flex-col bg-white relative">
+                <header className="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-white shadow-sm">
+                    <h2 className="text-lg font-black uppercase tracking-tighter text-black">Swap Chat</h2>
                     <div className="flex gap-2">
                         {isSeller && activeTrade.status === 'NEGOTIATING' && (
-                            <button onClick={() => setShowDealModal(true)} className="bg-cyan-500 text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Close Deal</button>
+                            <button onClick={() => setShowDealModal(true)} className="bg-black text-white hover:bg-blue-600 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-colors shadow-lg">Close Deal</button>
                         )}
                         {activeTrade.status === 'COMPLETED' && isBuyer && (
-                            <button onClick={() => setShowRating(true)} className="bg-yellow-400 text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Rate Partner</button>
+                            <button onClick={() => setShowRating(true)} className="bg-blue-600 text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">Rate Partner</button>
                         )}
                     </div>
                 </header>
 
                 <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
                     {activeTrade.status === 'PROPOSED' && (
-                        <div className="bg-gray-900 border-2 border-cyan-500 p-8 rounded-[2rem] space-y-6">
-                            <h3 className="text-xl font-black uppercase tracking-tighter text-cyan-400">Final Proposal</h3>
-                            <div className="grid grid-cols-2 gap-4 text-xs">
-                                <div><p className="text-gray-500 uppercase font-black">Cash</p><p className="font-bold">₹{activeTrade.moneyProposal}</p></div>
-                                <div><p className="text-gray-500 uppercase font-black">Barter</p><p className="font-bold">{activeTrade.barterProposal || 'None'}</p></div>
+                        <div className="bg-white border-2 border-blue-600 p-8 rounded-[3rem] space-y-6 shadow-xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 bg-blue-600 text-white px-6 py-2 rounded-bl-3xl font-black text-[10px] uppercase tracking-widest">Decision Pending</div>
+                            <h3 className="text-2xl font-black uppercase tracking-tighter text-black">Final Proposal</h3>
+                            <div className="grid grid-cols-2 gap-8">
+                                <div className="space-y-1">
+                                    <p className="text-gray-400 uppercase font-black text-[10px] tracking-widest">Cash</p>
+                                    <p className="text-2xl font-black text-blue-600">₹{activeTrade.moneyProposal}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-gray-400 uppercase font-black text-[10px] tracking-widest">Barter Item</p>
+                                    <p className="text-lg font-bold text-black">{activeTrade.barterProposal || 'NONE'}</p>
+                                </div>
                             </div>
                             {activeTrade.commitmentProposal && (
-                                <div className="mt-4 p-4 bg-black/40 rounded-xl border border-white/5">
-                                    <p className="text-gray-500 uppercase font-black text-[10px]">Commitment</p>
-                                    <p className="font-medium text-gray-300 mt-1">"{activeTrade.commitmentProposal}"</p>
+                                <div className="mt-4 p-6 bg-gray-50 rounded-2xl border border-gray-100 italic">
+                                    <p className="text-gray-400 uppercase font-black text-[8px] tracking-widest mb-2">Extra Commitment</p>
+                                    <p className="font-bold text-gray-700">"{activeTrade.commitmentProposal}"</p>
                                 </div>
                             )}
                             {isBuyer && (
-                                <div className="flex gap-4">
-                                    <button onClick={handleDecline} className="flex-1 bg-white/5 text-gray-400 py-4 rounded-2xl font-black uppercase tracking-widest text-xs border border-white/10 hover:bg-red-500/10 hover:text-red-400 transition-all">Decline Proposal</button>
-                                    <button onClick={handleAccept} className="flex-[2] bg-cyan-500 text-black py-4 rounded-2xl font-black uppercase tracking-widest text-xs">Accept & Lock Deal</button>
+                                <div className="flex gap-4 pt-4">
+                                    <button onClick={handleDecline} className="flex-1 bg-gray-100 text-gray-400 py-5 rounded-3xl font-black uppercase tracking-widest text-[10px] hover:bg-red-50 hover:text-red-500 transition-all border border-transparent">Decline</button>
+                                    <button onClick={handleAccept} className="flex-[2] bg-blue-600 text-white py-5 rounded-3xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-blue-500/20">Accept & Lock Deal</button>
                                 </div>
                             )}
                         </div>
@@ -247,11 +254,11 @@ const TradePage = () => {
                         const isMe = msg.senderId === user?.id;
                         return (
                             <div key={idx} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1 px-1">
-                                    {isMe ? 'You' : msg.sender?.profile?.fullName || 'Partner'}
+                                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 px-2">
+                                    {isMe ? 'YOU' : (msg.sender?.profile?.fullName || 'PARTNER').split(' ')[0]}
                                 </span>
-                                <div className={`max-w-[80%] rounded-2xl p-4 ${isMe ? 'bg-cyan-500 text-black' : 'bg-white/5 text-white'}`}>
-                                    <p className="text-sm">{msg.content}</p>
+                                <div className={`max-w-[75%] rounded-[2rem] px-6 py-4 shadow-sm ${isMe ? 'bg-black text-white rounded-tr-none' : 'bg-gray-100 text-black rounded-tl-none'}`}>
+                                    <p className="text-sm font-medium leading-relaxed">{msg.content}</p>
                                 </div>
                             </div>
                         );
@@ -259,9 +266,9 @@ const TradePage = () => {
                     <div ref={messagesEndRef} />
                 </div>
 
-                <form onSubmit={handleSend} className="p-8 flex gap-4">
-                    <input className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-cyan-500" placeholder="Type a message..." value={message} onChange={(e) => setMessage(e.target.value)} />
-                    <button type="submit" className="bg-cyan-500 p-4 rounded-2xl text-black transition-transform active:scale-90"><Send size={20} /></button>
+                <form onSubmit={handleSend} className="p-8 flex gap-4 bg-white border-t border-gray-100">
+                    <input className="flex-1 bg-gray-50 border border-transparent rounded-2xl px-6 py-5 text-black outline-none focus:bg-white focus:border-blue-600 transition-all font-bold placeholder:text-gray-300" placeholder="Type a message..." value={message} onChange={(e) => setMessage(e.target.value)} />
+                    <button type="submit" className="bg-blue-600 p-5 rounded-2xl text-white shadow-lg shadow-blue-500/20 transition-transform active:scale-90"><Send size={20} /></button>
                 </form>
             </div>
 

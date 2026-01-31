@@ -56,14 +56,17 @@ export const getItems = async (req: Request, res: Response) => {
     }
 
     try {
+        console.log('Fetching items with filters:', filters);
         const items = await prisma.item.findMany({
             where: filters,
-            include: { seller: { select: { profile: { select: { fullName: true } }, trustScore: true } } },
+            include: { seller: { select: { profile: { select: { fullName: true } }, trustScore: true, email: true } } },
             orderBy: { createdAt: 'desc' },
         });
+        console.log(`Found ${items.length} items`);
         res.json(items);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch items' });
+        console.error('Error fetching items:', error);
+        res.status(500).json({ error: 'Failed to fetch items', details: error instanceof Error ? error.message : 'Unknown error' });
     }
 };
 
