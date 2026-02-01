@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 });
 
 // For Vercel, we export the app instead of listening
-export default server;
+export default app;
 
 
 // Keep listen for local dev if needed, or wrap it?
