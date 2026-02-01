@@ -42,7 +42,10 @@ export const createTrade = async (req: AuthRequest, res: Response) => {
         res.json(trade);
     } catch (error) {
         console.error('Trade initiation error:', error);
-        res.status(500).json({ error: 'Failed to initiate trade' });
+        res.status(500).json({
+            error: 'Failed to initiate trade',
+            details: (error as any).message
+        });
     }
 };
 
