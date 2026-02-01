@@ -3,6 +3,7 @@ import { ShoppingBag, LayoutDashboard, PlusCircle, Home as HomeIcon, Sparkles, G
 import { useAuthStore } from '../store/useAuthStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
+import MagneticButton from './ui/MagneticButton';
 
 const Navbar = () => {
     const { user } = useAuthStore();
@@ -105,22 +106,14 @@ const Navbar = () => {
                 ) : (
                     <div className="flex items-center gap-4">
                         <Link to="/login">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${location.pathname === '/login' ? 'bg-white text-black' : 'text-gray-400 hover:text-white border border-white/10 hover:border-white/20'}`}
-                            >
+                            <MagneticButton className="px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all text-gray-400 hover:text-white border border-white/10 hover:border-white/20">
                                 Login
-                            </motion.button>
+                            </MagneticButton>
                         </Link>
                         <Link to="/register">
-                            <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                className={`px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-xl ${location.pathname === '/register' ? 'bg-blue-600 text-white shadow-blue-600/20' : 'bg-white text-black shadow-white/10 hover:bg-blue-600 hover:text-white'}`}
-                            >
+                            <MagneticButton className="px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-xl bg-white text-black shadow-white/10 hover:bg-blue-600 hover:text-white">
                                 Register
-                            </motion.button>
+                            </MagneticButton>
                         </Link>
                     </div>
                 )}

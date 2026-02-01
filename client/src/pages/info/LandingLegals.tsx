@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { Zap, Shield, MessageSquare, Search, Trophy, Globe, PlusCircle, MessageCircle, Handshake, Fingerprint } from 'lucide-react';
 
 const FeaturesPage = () => {
@@ -41,12 +42,22 @@ const FeaturesPage = () => {
         }
     ];
 
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        const { clientX, clientY } = e;
+        const x = (clientX / window.innerWidth - 0.5) * 40;
+        const y = (clientY / window.innerHeight - 0.5) * 40;
+        setMousePosition({ x, y });
+    };
+
     return (
-        <div className="min-h-screen bg-white py-24 px-6">
+        <div className="min-h-screen bg-white py-24 px-6" onMouseMove={handleMouseMove}>
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1, x: mousePosition.x * -1, y: mousePosition.y * -1 }}
+                    transition={{ type: 'spring', stiffness: 50, damping: 20 }}
                     className="text-center mb-24"
                 >
                     <h1 className="text-7xl md:text-9xl font-black text-black tracking-tighter uppercase mb-6 leading-none">
