@@ -30,9 +30,16 @@ const RegisterPage = () => {
             navigate('/profile-setup');
         } catch (err: any) {
             console.error('Registration Catch:', err);
+            console.error('Detailed Error Config:', err.config);
+            console.error('Detailed Error Response:', err.response);
+
             const serverMsg = err.response?.data?.error;
             const detailMsg = err.response?.data?.message;
-            setError(serverMsg || detailMsg || 'Registration failed - Server unreachable');
+            if (err.code === "ERR_NETWORK") {
+                setError("Unable to reach server. Please check your connection or try again later.");
+            } else {
+                setError(serverMsg || detailMsg || `Registration failed: ${err.message}`);
+            }
         } finally {
             setIsLoading(false);
         }
