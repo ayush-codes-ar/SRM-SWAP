@@ -5,6 +5,7 @@ import { MapPin, Calendar, CheckCircle, Clock, ShieldAlert, BadgeCheck, User, Me
 import { useAuthStore } from '../../store/useAuthStore';
 import ScheduleModal from '../../components/ScheduleModal';
 import RatingModal from '../../components/RatingModal';
+import Skeleton from '../../components/ui/Skeleton';
 
 type DashboardView = 'PENDING_DEALS' | 'APPROVED_DEALS' | 'COMPLETED_DEALS' | 'NEW_ISSUES' | 'PENDING_ISSUES' | 'SOLVED_ISSUES' | 'PROFILE';
 
@@ -113,7 +114,23 @@ const MemberDashboard = () => {
                 </header>
 
                 {loading ? (
-                    <div className="animate-pulse text-cyan-500 font-bold uppercase tracking-widest">Syncing with Node...</div>
+                    <div className="grid gap-6">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="bg-white border border-gray-100 p-8 rounded-[2.5rem] flex justify-between items-center">
+                                <div className="space-y-4 flex-1">
+                                    <Skeleton className="h-10 w-1/2" />
+                                    <div className="flex gap-4">
+                                        <Skeleton className="h-4 w-32" />
+                                        <Skeleton className="h-4 w-32" />
+                                    </div>
+                                    <Skeleton className="h-16 w-full rounded-[2rem]" />
+                                </div>
+                                <div className="ml-8">
+                                    <Skeleton className="h-14 w-40 rounded-[2rem]" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <div className="grid gap-6">
                         {view.includes('DEAL') && trades.map(trade => (

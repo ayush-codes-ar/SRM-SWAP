@@ -3,6 +3,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FileUpload from '../../components/FileUpload';
+import Skeleton from '../../components/ui/Skeleton';
 
 const ProfileSetupPage = () => {
     const { profile, fetchProfile, updateProfile } = useAuthStore();
@@ -39,8 +40,23 @@ const ProfileSetupPage = () => {
     };
 
     if (loading) return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="animate-pulse text-blue-600 font-black uppercase tracking-[0.2em] text-sm">Accessing Profile Nexus...</div>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center relative overflow-hidden p-10">
+            <div className="w-full max-w-2xl bg-white border border-gray-100 p-16 rounded-[4.5rem] shadow-2xl relative z-10">
+                <div className="mb-12 space-y-4">
+                    <Skeleton className="h-2 w-20 rounded-full" />
+                    <Skeleton className="h-16 w-3/4 rounded-3xl" />
+                    <Skeleton className="h-4 w-1/2" />
+                </div>
+                <div className="space-y-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <Skeleton className="h-16 w-full rounded-[2rem]" />
+                        <Skeleton className="h-16 w-full rounded-[2rem]" />
+                    </div>
+                    <Skeleton className="h-16 w-full rounded-[2rem]" />
+                    <Skeleton className="h-24 w-full rounded-[2rem]" />
+                    <Skeleton className="h-16 w-full rounded-[3rem]" />
+                </div>
+            </div>
         </div>
     );
 

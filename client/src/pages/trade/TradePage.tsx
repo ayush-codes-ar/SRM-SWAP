@@ -6,6 +6,7 @@ import { Send, MapPin, Calendar, ArrowLeft, Clock, ShieldAlert } from 'lucide-re
 import { motion, AnimatePresence } from 'framer-motion';
 import RatingModal from '../../components/RatingModal';
 import DealProposalModal from '../../components/DealProposalModal';
+import Skeleton from '../../components/ui/Skeleton';
 
 const TradePage = () => {
     const { id } = useParams<{ id: string }>();
@@ -91,8 +92,26 @@ const TradePage = () => {
     };
 
     if (!activeTrade) return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="animate-pulse text-blue-600 font-black text-2xl uppercase tracking-[0.2em]">Dialing Signal...</div>
+        <div className="h-[calc(100vh-88px)] bg-gray-50 flex flex-col lg:flex-row overflow-hidden">
+            <div className="w-full lg:w-1/3 border-r border-gray-100 bg-gray-50/50 p-6 space-y-8">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="aspect-square rounded-[3rem]" />
+                <div className="space-y-4">
+                    <Skeleton className="h-24 w-full rounded-3xl" />
+                    <Skeleton className="h-16 w-full rounded-3xl" />
+                </div>
+            </div>
+            <div className="flex-1 flex flex-col bg-white">
+                <div className="px-8 py-5 border-b border-gray-100 flex justify-between">
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-8 w-24 rounded-full" />
+                </div>
+                <div className="flex-1 p-8 space-y-6">
+                    <Skeleton className="h-20 w-3/4 rounded-tr-none self-start" />
+                    <Skeleton className="h-12 w-1/2 rounded-tl-none self-end ml-auto" />
+                    <Skeleton className="h-24 w-2/3 rounded-tr-none self-start" />
+                </div>
+            </div>
         </div>
     );
 

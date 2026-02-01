@@ -4,6 +4,7 @@ import api from '../../services/api';
 import { motion } from 'framer-motion';
 import { ShoppingBag, MessageSquare, ShieldCheck, List } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Skeleton from '../../components/ui/Skeleton';
 
 const StudentDashboard = () => {
     const { user, profile, fetchProfile } = useAuthStore();
@@ -30,7 +31,49 @@ const StudentDashboard = () => {
         fetchData();
     }, []);
 
-    if (loading) return <div className="text-white p-10">Loading your vibe...</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-gray-50 text-black p-8 space-y-12">
+            <div className="bg-white p-10 rounded-[3rem] border border-gray-100 flex items-center gap-8">
+                <Skeleton className="w-32 h-32 rounded-full" />
+                <div className="space-y-4 flex-1">
+                    <Skeleton className="h-12 w-1/3" />
+                    <Skeleton className="h-8 w-64 rounded-full" />
+                </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                    <Skeleton className="h-8 w-48" />
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="bg-white border border-gray-100 p-6 rounded-[2rem] flex justify-between items-center">
+                            <div className="flex items-center gap-4">
+                                <Skeleton className="w-12 h-12 rounded-2xl" />
+                                <div className="space-y-2">
+                                    <Skeleton className="h-6 w-48" />
+                                    <Skeleton className="h-3 w-32" />
+                                </div>
+                            </div>
+                            <Skeleton className="h-8 w-24 rounded-full" />
+                        </div>
+                    ))}
+                </div>
+                <div className="space-y-6">
+                    <Skeleton className="h-8 w-48" />
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="bg-gray-50/50 border border-gray-100 p-6 rounded-[2rem] flex justify-between items-center">
+                            <div className="flex gap-5 items-center">
+                                <Skeleton className="w-14 h-14 rounded-2xl" />
+                                <div className="space-y-2">
+                                    <Skeleton className="h-6 w-32" />
+                                    <Skeleton className="h-4 w-20" />
+                                </div>
+                            </div>
+                            <Skeleton className="h-8 w-16" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-gray-50 text-black p-8 space-y-12">

@@ -4,6 +4,7 @@ import ItemCard from '../../components/ItemCard';
 import { useNavigate } from 'react-router-dom';
 import { useTradeStore } from '../../store/useTradeStore';
 import { AnimatePresence, motion } from 'framer-motion';
+import Skeleton from '../../components/ui/Skeleton';
 
 const MarketplacePage = () => {
     const { items, fetchItems, loading } = useItemStore();
@@ -122,8 +123,19 @@ const MarketplacePage = () => {
             )}
 
             {loading ? (
-                <div className="text-center py-48">
-                    <div className="inline-block animate-pulse text-blue-600 font-black uppercase tracking-[0.5em] text-[10px]">Scanning Grid Coordinates...</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 relative z-10">
+                    {[...Array(8)].map((_, i) => (
+                        <div key={i} className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden h-[400px] flex flex-col">
+                            <Skeleton className="h-64 w-full rounded-none" />
+                            <div className="p-6 space-y-4 flex-1">
+                                <Skeleton className="h-6 w-3/4" />
+                                <div className="flex justify-between">
+                                    <Skeleton className="h-4 w-1/3" />
+                                    <Skeleton className="h-4 w-1/4" />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <motion.div
