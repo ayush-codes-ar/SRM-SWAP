@@ -17,15 +17,23 @@ const server = http.createServer(app);
 app.set("trust proxy", 1);
 
 // Allowed origins
-const allowedOrigins = [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "https://srm-swap.vercel.app"
-];
+// Allowed origins
+const isAllowedOrigin = (origin: string) => {
+    const allowedList = [
+        "http://localhost:5173",
+        "http://localhost:5174"
+    ];
+    // Check specific allowed origins
+    if (allowedList.includes(origin)) return true;
+    // Check for Vercel deployments (any subdomain)
+    if (origin.endsWith('.vercel.app')) return true;
+
+    return false;
+};
 
 const corsOptions = {
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || isAllowedOrigin(origin)) {
             callback(null, true);
         } else {
             console.warn(`Blocked CORS origin: ${origin}`);
@@ -38,7 +46,13 @@ const corsOptions = {
 
 export const io = new Server(server, {
     cors: {
-        origin: allowedOrigins,
+        origin: (origin, callback) => {
+            if (!origin || isAllowedOrigin(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         methods: ["GET", "POST"],
         credentials: true
     }
