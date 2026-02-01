@@ -165,7 +165,7 @@ export const scheduleTrade = async (req: AuthRequest, res: Response) => {
 
 export const proposeDeal = async (req: AuthRequest, res: Response) => {
     const id = req.params.id as string;
-    const { moneyProposal, barterProposal, commitmentProposal } = req.body;
+    const { money, barter, commitment } = req.body;
     const userId = req.user?.id;
 
     try {
@@ -181,9 +181,9 @@ export const proposeDeal = async (req: AuthRequest, res: Response) => {
             where: { id },
             data: {
                 status: 'PROPOSED' as any,
-                moneyProposal: parseFloat(moneyProposal),
-                barterProposal,
-                commitmentProposal,
+                moneyProposal: Number(money),
+                barterProposal: barter,
+                commitmentProposal: commitment,
                 proposerId: userId
             },
             include: TRADE_INCLUDE
