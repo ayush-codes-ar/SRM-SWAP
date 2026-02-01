@@ -1,0 +1,34 @@
+server/
+├── api/
+│   └── index.ts
+├── prisma/
+│   ├── migrations/
+│   ├── schema.prisma
+│   └── seed.ts
+├── src/
+│   ├── controllers/
+│   │   ├── adminController.ts
+│   │   ├── authController.ts
+│   │   ├── issueController.ts
+│   │   ├── itemController.ts
+│   │   ├── ratingController.ts
+│   │   ├── tradeController.ts
+│   │   └── userController.ts
+│   ├── middleware/
+│   │   ├── authMiddleware.ts
+│   │   └── roleMiddleware.ts
+│   ├── routes/
+│   │   ├── adminRoutes.ts
+│   │   ├── authRoutes.ts
+│   │   ├── itemRoutes.ts
+│   │   ├── ratingRoutes.ts
+│   │   ├── tradeRoutes.ts
+│   │   └── userRoutes.ts
+│   ├── sockets/
+│   │   └── socketHandler.ts
+│   └── utils/
+├── uploads/
+├── .env
+├── package.json
+├── tsconfig.json
+└── vercel.json

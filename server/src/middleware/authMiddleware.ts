@@ -11,7 +11,7 @@ export const authenticateJWT = (req: AuthRequest, res: Response, next: NextFunct
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
+        jwt.verify(token, process.env.JWT_SECRET as string, (err, user: any) => {
             if (err) {
                 return res.status(403).json({ error: 'Session expired or invalid token. Please login again.' });
             }
