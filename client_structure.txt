@@ -1,0 +1,53 @@
+client/
+├── public/
+├── src/
+│   ├── assets/
+│   │   └── react.svg
+│   ├── components/
+│   │   ├── AnimatedButton.tsx
+│   │   ├── DealProposalModal.tsx
+│   │   ├── FileUpload.tsx
+│   │   ├── ItemCard.tsx
+│   │   ├── Logo.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── RatingModal.tsx
+│   │   └── ScheduleModal.tsx
+│   ├── pages/
+│   │   ├── auth/
+│   │   │   ├── LoginPage.tsx
+│   │   │   └── RegisterPage.tsx
+│   │   ├── dashboard/
+│   │   │   ├── AdminDashboard.tsx
+│   │   │   ├── MemberDashboard.tsx
+│   │   │   └── StudentDashboard.tsx
+│   │   ├── info/
+│   │   │   ├── AboutPage.tsx
+│   │   │   ├── FAQPage.tsx
+│   │   │   ├── FreshersSection.tsx
+│   │   │   └── LandingLegals.tsx
+│   │   ├── marketplace/
+│   │   │   ├── CreateListingPage.tsx
+│   │   │   └── MarketplacePage.tsx
+│   │   ├── profile/
+│   │   │   └── ProfileSetupPage.tsx
+│   │   └── trade/
+│   │       └── TradePage.tsx
+│   ├── services/
+│   │   └── api.ts
+│   ├── store/
+│   │   ├── useAuthStore.ts
+│   │   ├── useItemStore.ts
+│   │   └── useTradeStore.ts
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+└── vite.config.ts

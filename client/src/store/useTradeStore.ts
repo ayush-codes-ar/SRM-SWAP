@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { io, Socket } from 'socket.io-client';
+import api from '../services/api';
 
 interface Trade {
     id: string;
@@ -70,109 +72,81 @@ export const useTradeStore = create<TradeState>((set, get) => ({
     loading: false, // Initialize new state
 
     connectSocket: () => {
-        console.log('MOCK: Socket connection established');
+        const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+            withCredentials: true,
+            transports: ['websocket', 'polling']
+        });
+
+        socket.on('connect', () => {
+            console.log('Socket connected');
+        });
+
+        socket.on('message', (message: Message) => {
+            const { activeTrade } = get();
+            if (activeTrade) {
+                set({ activeTrade: { ...activeTrade, messages: [...activeTrade.messages, message] } });
+            }
+        });
+
+        set({ socket });
     },
     startTrade: async (listingId) => {
-        console.log('MOCK: Starting trade for', listingId);
-        return 'mock-trade-456';
+        const { data } = await api.post('/trades', { listingId });
+        return data.id;
     },
     fetchTrade: async (tradeId) => {
         set({ loading: true });
-        console.log('MOCK: Fetching trade', tradeId);
-        // MOCK TRADE
-        const mockTrade: Trade = {
-            id: tradeId,
-            status: 'NEGOTIATING',
-            listing: {
-                title: 'Gaming Laptop RTX 3060',
-                description: 'Excellent condition',
-                sellerId: 'mock-seller-789',
-                seller: { profile: { fullName: 'Aryan Sharma' }, trustScore: 920 },
-                price: 45000,
-                type: 'ELECTRONICS',
-                images: ['https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=80&w=800'],
-                allowHybrid: true
-            },
-            buyerId: 'mock-user-123',
-            buyer: { profile: { fullName: 'Demo Inhabitant' }, trustScore: 500 },
-            messages: [
-                {
-                    senderId: 'mock-seller-789',
-                    sender: { profile: { fullName: 'Aryan Sharma' } },
-                    content: 'Hi! I saw you are interested in the laptop. What is your offer?',
-                    createdAt: new Date(Date.now() - 3600000).toISOString()
-                },
-                {
-                    senderId: 'mock-user-123',
-                    sender: { profile: { fullName: 'Demo Inhabitant' } },
-                    content: 'Hey Aryan! I have an iPad Pro and can add some cash. Interested?',
-                    createdAt: new Date(Date.now() - 1800000).toISOString()
-                }
-            ]
-        };
-        set({ activeTrade: mockTrade, loading: false });
+        try {
+            const { data } = await api.get(`/trades/${tradeId}`);
+            set({ activeTrade: data, loading: false });
+
+            // Join socket room
+            const { socket } = get();
+            if (socket) {
+                socket.emit('joinTrade', tradeId);
+            }
+        } catch (error) {
+            console.error('Failed to fetch trade', error);
+            set({ loading: false });
+        }
     },
     fetchIssues: async (status) => {
         console.log('MOCK: Fetching issues', status);
         set({ issues: [] });
     },
-    sendMessage: async (_tradeId, senderId, content) => {
-        console.log('MOCK: Sending message', content);
-        const { activeTrade } = get();
-        if (activeTrade) {
-            const newMessage: Message = {
-                senderId,
-                sender: { profile: { fullName: senderId === 'mock-user-123' ? 'Demo Inhabitant' : 'Aryan Sharma' } },
-                content,
-                createdAt: new Date().toISOString()
-            };
-            set({ activeTrade: { ...activeTrade, messages: [...activeTrade.messages, newMessage] } });
+    sendMessage: async (tradeId, senderId, content) => {
+        const { socket } = get();
+        if (socket) {
+            socket.emit('sendMessage', { tradeId, senderId, content });
         }
     },
-    proposeDeal: async (_tradeId, terms) => {
-        console.log('MOCK: Proposing deal', terms);
-        const { activeTrade } = get();
-        if (activeTrade) {
-            set({
-                activeTrade: {
-                    ...activeTrade,
-                    status: 'PROPOSED',
-                    moneyProposal: terms.money,
-                    barterProposal: terms.barter,
-                    commitmentProposal: terms.commitment
-                }
-            });
-        }
+    proposeDeal: async (tradeId, terms) => {
+        await api.post(`/trades/${tradeId}/propose`, terms);
+        get().fetchTrade(tradeId);
     },
-    acceptDeal: async (_tradeId) => {
-        console.log('MOCK: Accepting deal', _tradeId);
-        const { activeTrade } = get();
-        if (activeTrade) {
-            set({ activeTrade: { ...activeTrade, status: 'ACCEPTED' } });
-        }
+    acceptDeal: async (tradeId) => {
+        await api.post(`/trades/${tradeId}/accept`);
+        get().fetchTrade(tradeId);
     },
-    declineDeal: async (_tradeId) => {
-        console.log('MOCK: Declining deal', _tradeId);
-        const { activeTrade } = get();
-        if (activeTrade) {
-            set({ activeTrade: { ...activeTrade, status: 'NEGOTIATING' } });
-        }
+    declineDeal: async (tradeId) => {
+        await api.post(`/trades/${tradeId}/decline`);
+        get().fetchTrade(tradeId);
     },
-    markDone: async (_id) => {
-        console.log('MOCK: Mark done', _id);
+    markDone: async (tradeId) => {
+        await api.post(`/trades/${tradeId}/mark-done`);
+        get().fetchTrade(tradeId);
     },
-    finishTrade: async (_id) => {
-        console.log('MOCK: Finish trade', _id);
-        const { activeTrade } = get();
-        if (activeTrade) {
-            set({ activeTrade: { ...activeTrade, status: 'COMPLETED' } });
-        }
+    finishTrade: async (tradeId) => {
+        await api.post(`/trades/${tradeId}/finish`);
+        get().fetchTrade(tradeId);
     },
-    reportIssue: async (_tradeId, description) => {
-        console.log('MOCK: Report issue', description);
-        set({ activeTrade: { ...get().activeTrade!, status: 'UNDER_REVIEW' } });
+    reportIssue: async (tradeId, description) => {
+        await api.post(`/trades/${tradeId}/report-issue`, { description });
+        get().fetchTrade(tradeId);
     },
     disconnectSocket: () => {
-        console.log('MOCK: Socket disconnected');
+        const { socket } = get();
+        if (socket) socket.disconnect();
+        set({ socket: null });
     }
 }));
