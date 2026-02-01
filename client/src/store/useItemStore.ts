@@ -41,7 +41,6 @@ export const useItemStore = create<ItemState>((set) => ({
             set({ loading: false });
         }
     },
-},
     createItem: async (data) => {
         await api.post('/items', data);
     },

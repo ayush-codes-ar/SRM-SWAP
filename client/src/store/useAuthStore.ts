@@ -23,35 +23,31 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             user: null,
             token: null,
             profile: null,
             login: async (credentials) => {
-                login: async (credentials) => {
-                    const { data } = await api.post('/auth/login', credentials);
-                    set({ user: data.user, token: data.token });
-                },
-                    register: async (data) => {
-                        register: async (registerData) => {
-                            const { data } = await api.post('/auth/register', registerData);
-                            set({ user: data.user, token: data.token });
-                        },
-                            fetchProfile: async () => {
-                                fetchProfile: async () => {
-                                    try {
-                                        const { data } = await api.get('/user/profile');
-                                        set({ profile: data });
-                                    } catch (error) {
-                                        console.error('Failed to fetch profile', error);
-                                    }
-                                },
-                                    updateProfile: async (data) => {
-                                        updateProfile: async (updateData) => {
-                                            const { data } = await api.put('/user/profile', updateData);
-                                            set({ profile: data });
-                                        },
-                                            logout: () => set({ user: null, token: null, profile: null }),
+                const { data } = await api.post('/auth/login', credentials);
+                set({ user: data.user, token: data.token });
+            },
+            register: async (registerData) => {
+                const { data } = await api.post('/auth/register', registerData);
+                set({ user: data.user, token: data.token });
+            },
+            fetchProfile: async () => {
+                try {
+                    const { data } = await api.get('/user/profile');
+                    set({ profile: data });
+                } catch (error) {
+                    console.error('Failed to fetch profile', error);
+                }
+            },
+            updateProfile: async (updateData) => {
+                const { data } = await api.put('/user/profile', updateData);
+                set({ profile: data });
+            },
+            logout: () => set({ user: null, token: null, profile: null }),
         }),
         {
             name: 'auth-storage',
