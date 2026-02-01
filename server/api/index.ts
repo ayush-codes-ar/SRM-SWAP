@@ -43,7 +43,7 @@ app.use('/api/ratings', ratingRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
-    res.send('SRM Swap API is running');
+    res.send('Backend is live!');
 });
 
 // For Vercel, we export the app instead of listening
