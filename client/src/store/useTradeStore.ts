@@ -1,6 +1,4 @@
 import { create } from 'zustand';
-import api from '../services/api';
-import { io, Socket } from 'socket.io-client';
 
 interface Trade {
     id: string;
@@ -44,7 +42,7 @@ interface Message {
 }
 
 interface TradeState {
-    socket: Socket | null; // Keep socket in state for proper management
+    socket: any | null; // Keep socket in state for proper management
     activeTrade: Trade | null;
     trades: Trade[]; // List of user's trades
     issues: any[]; // New: List of issues
@@ -118,7 +116,7 @@ export const useTradeStore = create<TradeState>((set, get) => ({
         console.log('MOCK: Fetching issues', status);
         set({ issues: [] });
     },
-    sendMessage: async (tradeId, senderId, content) => {
+    sendMessage: async (_tradeId, senderId, content) => {
         console.log('MOCK: Sending message', content);
         const { activeTrade } = get();
         if (activeTrade) {
@@ -131,7 +129,7 @@ export const useTradeStore = create<TradeState>((set, get) => ({
             set({ activeTrade: { ...activeTrade, messages: [...activeTrade.messages, newMessage] } });
         }
     },
-    proposeDeal: async (tradeId, terms) => {
+    proposeDeal: async (_tradeId, terms) => {
         console.log('MOCK: Proposing deal', terms);
         const { activeTrade } = get();
         if (activeTrade) {
@@ -146,31 +144,31 @@ export const useTradeStore = create<TradeState>((set, get) => ({
             });
         }
     },
-    acceptDeal: async (tradeId) => {
-        console.log('MOCK: Accepting deal', tradeId);
+    acceptDeal: async (_tradeId) => {
+        console.log('MOCK: Accepting deal', _tradeId);
         const { activeTrade } = get();
         if (activeTrade) {
             set({ activeTrade: { ...activeTrade, status: 'ACCEPTED' } });
         }
     },
-    declineDeal: async (tradeId) => {
-        console.log('MOCK: Declining deal', tradeId);
+    declineDeal: async (_tradeId) => {
+        console.log('MOCK: Declining deal', _tradeId);
         const { activeTrade } = get();
         if (activeTrade) {
             set({ activeTrade: { ...activeTrade, status: 'NEGOTIATING' } });
         }
     },
-    markDone: async (id) => {
-        console.log('MOCK: Mark done', id);
+    markDone: async (_id) => {
+        console.log('MOCK: Mark done', _id);
     },
-    finishTrade: async (id) => {
-        console.log('MOCK: Finish trade', id);
+    finishTrade: async (_id) => {
+        console.log('MOCK: Finish trade', _id);
         const { activeTrade } = get();
         if (activeTrade) {
             set({ activeTrade: { ...activeTrade, status: 'COMPLETED' } });
         }
     },
-    reportIssue: async (tradeId, description) => {
+    reportIssue: async (_tradeId, description) => {
         console.log('MOCK: Report issue', description);
         set({ activeTrade: { ...get().activeTrade!, status: 'UNDER_REVIEW' } });
     },
