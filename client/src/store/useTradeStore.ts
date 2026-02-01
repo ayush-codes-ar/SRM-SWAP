@@ -81,10 +81,17 @@ export const useTradeStore = create<TradeState>((set, get) => ({
             console.log('Socket connected');
         });
 
-        socket.on('message', (message: Message) => {
+        socket.on('receive_message', (message: Message) => {
             const { activeTrade } = get();
             if (activeTrade) {
                 set({ activeTrade: { ...activeTrade, messages: [...activeTrade.messages, message] } });
+            }
+        });
+
+        socket.on('trade_status_updated', (updatedTrade: Trade) => {
+            const { activeTrade } = get();
+            if (activeTrade && activeTrade.id === updatedTrade.id) {
+                set({ activeTrade: updatedTrade });
             }
         });
 
@@ -103,7 +110,7 @@ export const useTradeStore = create<TradeState>((set, get) => ({
             // Join socket room
             const { socket } = get();
             if (socket) {
-                socket.emit('joinTrade', tradeId);
+                socket.emit('join_trade', tradeId);
             }
         } catch (error) {
             console.error('Failed to fetch trade', error);
@@ -117,7 +124,7 @@ export const useTradeStore = create<TradeState>((set, get) => ({
     sendMessage: async (tradeId, senderId, content) => {
         const { socket } = get();
         if (socket) {
-            socket.emit('sendMessage', { tradeId, senderId, content });
+            socket.emit('send_message', { tradeId, senderId, content });
         }
     },
     proposeDeal: async (tradeId, terms) => {
