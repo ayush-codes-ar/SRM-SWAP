@@ -72,80 +72,109 @@ export const useTradeStore = create<TradeState>((set, get) => ({
     loading: false, // Initialize new state
 
     connectSocket: () => {
-        const socket = io();
-        set({ socket });
-
-        socket.on('receive_message', (message) => {
-            const { activeTrade } = get();
-            if (activeTrade && activeTrade.id === message.tradeId) {
-                set({ activeTrade: { ...activeTrade, messages: [...activeTrade.messages, message] } });
-            }
-        });
-        // The instruction's connectSocket was problematic, reverting to a functional version
-        // that integrates with the existing state management of the socket.
-        // If the intention was to remove socket from state, then the socket variable
-        // would need to be managed externally or globally.
+        console.log('MOCK: Socket connection established');
     },
     startTrade: async (listingId) => {
-        const res = await api.post('/trades', { listingId });
-        return res.data.id;
+        console.log('MOCK: Starting trade for', listingId);
+        return 'mock-trade-456';
     },
-    fetchTrade: async (tradeId) => { // Updated signature to match instruction
-        set({ loading: true }); // New: Set loading
-        const res = await api.get(`/trades/${tradeId}`);
-        set({ activeTrade: res.data, loading: false }); // New: Set loading
-        const { socket } = get();
-        if (socket) {
-            socket.emit('join_trade', tradeId);
+    fetchTrade: async (tradeId) => {
+        set({ loading: true });
+        console.log('MOCK: Fetching trade', tradeId);
+        // MOCK TRADE
+        const mockTrade: Trade = {
+            id: tradeId,
+            status: 'NEGOTIATING',
+            listing: {
+                title: 'Gaming Laptop RTX 3060',
+                description: 'Excellent condition',
+                sellerId: 'mock-seller-789',
+                seller: { profile: { fullName: 'Aryan Sharma' }, trustScore: 920 },
+                price: 45000,
+                type: 'ELECTRONICS',
+                images: ['https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=80&w=800'],
+                allowHybrid: true
+            },
+            buyerId: 'mock-user-123',
+            buyer: { profile: { fullName: 'Demo Inhabitant' }, trustScore: 500 },
+            messages: [
+                {
+                    senderId: 'mock-seller-789',
+                    sender: { profile: { fullName: 'Aryan Sharma' } },
+                    content: 'Hi! I saw you are interested in the laptop. What is your offer?',
+                    createdAt: new Date(Date.now() - 3600000).toISOString()
+                },
+                {
+                    senderId: 'mock-user-123',
+                    sender: { profile: { fullName: 'Demo Inhabitant' } },
+                    content: 'Hey Aryan! I have an iPad Pro and can add some cash. Interested?',
+                    createdAt: new Date(Date.now() - 1800000).toISOString()
+                }
+            ]
+        };
+        set({ activeTrade: mockTrade, loading: false });
+    },
+    fetchIssues: async (status) => {
+        console.log('MOCK: Fetching issues', status);
+        set({ issues: [] });
+    },
+    sendMessage: async (tradeId, senderId, content) => {
+        console.log('MOCK: Sending message', content);
+        const { activeTrade } = get();
+        if (activeTrade) {
+            const newMessage: Message = {
+                senderId,
+                sender: { profile: { fullName: senderId === 'mock-user-123' ? 'Demo Inhabitant' : 'Aryan Sharma' } },
+                content,
+                createdAt: new Date().toISOString()
+            };
+            set({ activeTrade: { ...activeTrade, messages: [...activeTrade.messages, newMessage] } });
         }
     },
-    fetchIssues: async (status) => { // New: fetchIssues action
-        const res = await api.get(`/trades/issues/${status}`);
-        set({ issues: res.data });
-    },
-    sendMessage: async (tradeId, senderId, content) => { // Updated signature to match instruction
-        const { socket } = get();
-        if (socket) {
-            socket.emit('send_message', { tradeId, senderId, content });
+    proposeDeal: async (tradeId, terms) => {
+        console.log('MOCK: Proposing deal', terms);
+        const { activeTrade } = get();
+        if (activeTrade) {
+            set({
+                activeTrade: {
+                    ...activeTrade,
+                    status: 'PROPOSED',
+                    moneyProposal: terms.money,
+                    barterProposal: terms.barter,
+                    commitmentProposal: terms.commitment
+                }
+            });
         }
-        // The instruction also had an API call here, but the original used socket.emit.
-        // Assuming socket.emit is the primary way for real-time, and an API call might be for persistence.
-        // For now, keeping the socket.emit as it was in the original, but adding the async signature.
-        // If the API call is intended for persistence, it should be added here.
-        // const res = await api.post(`/messages`, { tradeId, senderId, content });
-        // Socket will handle update but we can optimistic update
-    },
-    proposeDeal: async (tradeId, terms) => { // Updated signature to match instruction
-        const res = await api.post(`/trades/${tradeId}/propose`, {
-            moneyProposal: terms.money,
-            barterProposal: terms.barter,
-            commitmentProposal: terms.commitment
-        });
-        set({ activeTrade: res.data });
     },
     acceptDeal: async (tradeId) => {
-        const res = await api.post(`/trades/${tradeId}/accept`);
-        set({ activeTrade: res.data });
+        console.log('MOCK: Accepting deal', tradeId);
+        const { activeTrade } = get();
+        if (activeTrade) {
+            set({ activeTrade: { ...activeTrade, status: 'ACCEPTED' } });
+        }
     },
     declineDeal: async (tradeId) => {
-        const res = await api.post(`/trades/${tradeId}/decline`);
-        set({ activeTrade: res.data });
+        console.log('MOCK: Declining deal', tradeId);
+        const { activeTrade } = get();
+        if (activeTrade) {
+            set({ activeTrade: { ...activeTrade, status: 'NEGOTIATING' } });
+        }
     },
     markDone: async (id) => {
-        const res = await api.post(`/trades/${id}/mark-done`);
-        set({ activeTrade: res.data });
+        console.log('MOCK: Mark done', id);
     },
     finishTrade: async (id) => {
-        const res = await api.post(`/trades/${id}/finish`);
-        set({ activeTrade: res.data });
+        console.log('MOCK: Finish trade', id);
+        const { activeTrade } = get();
+        if (activeTrade) {
+            set({ activeTrade: { ...activeTrade, status: 'COMPLETED' } });
+        }
     },
     reportIssue: async (tradeId, description) => {
-        await api.post(`/trades/${tradeId}/report-issue`, { tradeId, description });
+        console.log('MOCK: Report issue', description);
         set({ activeTrade: { ...get().activeTrade!, status: 'UNDER_REVIEW' } });
     },
     disconnectSocket: () => {
-        const { socket } = get();
-        if (socket) socket.disconnect();
-        set({ socket: null });
+        console.log('MOCK: Socket disconnected');
     }
 }));

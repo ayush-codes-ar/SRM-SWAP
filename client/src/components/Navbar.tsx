@@ -40,8 +40,12 @@ const Navbar = () => {
             transition={{ type: 'spring' as const, damping: 20, stiffness: 100 }}
             className="sticky top-0 w-full glass-morphism px-12 py-5 flex justify-between items-center z-50 border-white/5"
         >
-            <Link to={user ? "/marketplace" : "/"} className="no-underline">
+            <Link to={user ? "/marketplace" : "/"} className="no-underline flex items-center gap-4">
                 <Logo />
+                <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-yellow-400/10 border border-yellow-400/20 rounded-full">
+                    <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-yellow-500">Demo Mode</span>
+                </div>
             </Link>
 
             <div className="flex items-center gap-10">

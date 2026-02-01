@@ -23,31 +23,51 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             user: null,
             token: null,
             profile: null,
             login: async (credentials) => {
-                const res = await api.post('/auth/login', credentials);
-                set({ user: res.data.user, token: res.data.token });
+                // MOCK LOGIN
+                const dummyUser = {
+                    id: 'mock-user-123',
+                    email: credentials.identifier || 'demo@srmap.edu.in',
+                    role: credentials.role || 'STUDENT',
+                    trustScore: 850,
+                    isVerified: true
+                };
+                set({ user: dummyUser, token: 'mock-token-abc' });
             },
             register: async (data) => {
-                const res = await api.post('/auth/register', data);
-                set({ user: res.data.user, token: res.data.token });
+                // MOCK REGISTER
+                const dummyUser = {
+                    id: 'mock-user-123',
+                    email: data.email,
+                    role: 'STUDENT',
+                    trustScore: 500,
+                    isVerified: false
+                };
+                set({ user: dummyUser, token: 'mock-token-abc' });
             },
             fetchProfile: async () => {
-                const res = await api.get('/user/profile');
+                // MOCK PROFILE FETCH
+                const { user } = get();
+                if (!user) return;
                 set({
-                    profile: res.data,
-                    user: {
-                        ...res.data.user,
-                        id: res.data.userId // Prisma returns userId as a field in Profile
+                    profile: {
+                        userId: user.id,
+                        fullName: 'Demo Inhabitant',
+                        regNumber: 'AP21110010001',
+                        phone: '+91 99999 88888',
+                        hostelDetails: 'Demo Hostel, Room 404',
+                        user: user
                     }
                 });
             },
             updateProfile: async (data) => {
-                const res = await api.put('/user/profile', data);
-                set({ profile: res.data });
+                // MOCK PROFILE UPDATE
+                const { profile } = get();
+                set({ profile: { ...profile, ...data } });
             },
             logout: () => set({ user: null, token: null, profile: null }),
         }),

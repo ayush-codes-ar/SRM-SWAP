@@ -9,6 +9,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState<'STUDENT' | 'MEMBER' | 'ADMIN'>('STUDENT');
     const login = useAuthStore((state) => state.login);
+    const fetchProfile = useAuthStore((state) => state.fetchProfile);
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -22,28 +23,11 @@ const LoginPage = () => {
 
             // For students, check if profile is complete
             if (role === 'STUDENT') {
-                try {
-                    const profileRes = await fetch('/api/user/profile', {
-                        headers: {
-                            'Authorization': `Bearer ${useAuthStore.getState().token}`
-                        }
-                    });
-
-                    if (profileRes.ok) {
-                        const profileData = await profileRes.json();
-                        // If profile exists and has phone number, go to marketplace
-                        if (profileData && profileData.phone) {
-                            navigate('/marketplace');
-                        } else {
-                            // Profile incomplete, go to setup
-                            navigate('/profile-setup');
-                        }
-                    } else {
-                        // No profile found, go to setup
-                        navigate('/profile-setup');
-                    }
-                } catch {
-                    // Error fetching profile, assume incomplete
+                await fetchProfile();
+                const profile = useAuthStore.getState().profile;
+                if (profile && profile.phone) {
+                    navigate('/marketplace');
+                } else {
                     navigate('/profile-setup');
                 }
             } else if (role === 'ADMIN') {
