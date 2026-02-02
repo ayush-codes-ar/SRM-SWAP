@@ -7,6 +7,8 @@ interface ItemProps {
     onClick: () => void;
 }
 
+import { getImageUrl } from '../utils/imageUtils';
+
 import Spotlight from './ui/Spotlight';
 
 const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
@@ -39,7 +41,7 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
                                 hover: { scale: 1.1, filter: 'grayscale(0%)' }
                             }}
                             initial={{ filter: 'grayscale(40%)' }}
-                            src={`${item.images[0]}`}
+                            src={getImageUrl(item.images[0])}
                             alt={item.title}
                             className="w-full h-full object-cover transition-all duration-700"
                         />
