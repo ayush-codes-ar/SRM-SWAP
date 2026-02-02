@@ -76,8 +76,6 @@ SRM Swap is a high-performance P2P platform designed exclusively for students of
 
 ## 🔑 Default Credentials (Development)
 
--   **Admin**: `ayu` / `Ayu@10311`
--   **Member/Supervisor**: Reference the `member_credentials.md` artifact for generated test accounts.
 -   **Student**: Register with any `@srmap.edu.in` email.
 
 ---
