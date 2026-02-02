@@ -10,7 +10,7 @@ const router = Router();
 // Configure local storage for images
 const storage = multer.diskStorage({
     destination: (req: any, file: any, cb: any) => {
-        cb(null, 'uploads/');
+        cb(null, path.join(process.cwd(), 'uploads'));
     },
     filename: (req: any, file: any, cb: any) => {
         cb(null, Date.now() + path.extname(file.originalname));
@@ -25,6 +25,8 @@ router.get('/:id', getItemById);
 
 // Upload endpoint
 router.post('/upload', authenticateJWT, upload.array('images', 5), (req: any, res: any) => {
+    console.log('Upload Request Headers:', req.headers);
+    console.log('Upload Request Files:', req.files);
     const files = req.files as Express.Multer.File[];
     if (!files) return res.status(400).json({ error: 'No files uploaded' });
 

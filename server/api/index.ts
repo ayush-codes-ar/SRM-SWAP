@@ -71,7 +71,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve uploaded files statically
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 import authRoutes from '../src/routes/authRoutes';
 import userRoutes from '../src/routes/userRoutes';
