@@ -122,7 +122,7 @@ const TradePage = () => {
     const isUserFinished = isSeller ? activeTrade.sellerFinished : activeTrade.buyerFinished;
 
     return (
-        <div className="h-[calc(100vh-88px)] bg-gray-50 text-black flex flex-col lg:flex-row overflow-hidden">
+        <div className="h-[calc(100vh-88px)] bg-transparent text-black flex flex-col lg:flex-row overflow-hidden">
             {/* Left Column: Item + Seller Details */}
             <div className="w-full lg:w-1/3 border-r border-gray-100 bg-gray-50/50 overflow-y-auto custom-scrollbar">
                 <div className="p-6 space-y-8">

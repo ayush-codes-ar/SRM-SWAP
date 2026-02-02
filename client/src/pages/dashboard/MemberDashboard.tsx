@@ -70,7 +70,7 @@ const MemberDashboard = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 text-black flex">
+        <div className="min-h-screen bg-transparent text-black flex">
             {/* Sidebar */}
             <aside className="w-80 border-r border-gray-100 bg-white p-6 flex flex-col gap-2 sticky top-0 h-screen shadow-sm z-50">
                 <div className="mb-10 px-6">
@@ -105,7 +105,7 @@ const MemberDashboard = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 p-16 overflow-y-auto bg-gray-50/30">
+            <main className="flex-1 p-16 overflow-y-auto bg-transparent">
                 <header className="mb-16 flex justify-between items-end">
                     <div>
                         <h1 className="text-6xl font-black uppercase tracking-tighter text-black">{view.replace('_', ' ')}</h1>

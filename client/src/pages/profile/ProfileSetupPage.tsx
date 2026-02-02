@@ -61,7 +61,7 @@ const ProfileSetupPage = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 text-black p-10 flex items-center justify-center relative overflow-hidden">
+        <div className="min-h-screen bg-transparent text-black p-10 flex items-center justify-center relative overflow-hidden">
             {/* Ambient storytelling elements */}
             <motion.div
                 animate={{

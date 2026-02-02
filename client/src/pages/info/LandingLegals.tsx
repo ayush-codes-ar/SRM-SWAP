@@ -52,7 +52,7 @@ const FeaturesPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white py-24 px-6" onMouseMove={handleMouseMove}>
+        <div className="min-h-screen bg-transparent py-24 px-6" onMouseMove={handleMouseMove}>
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -119,7 +119,7 @@ export const HowItWorksPage = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white py-24 px-6 text-black overflow-hidden relative">
+        <div className="min-h-screen bg-transparent py-24 px-6 text-black overflow-hidden relative">
             <div className="max-w-6xl mx-auto relative z-10">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}

@@ -51,7 +51,7 @@ const MarketplacePage = () => {
 
     return (
         <div className="min-h-screen bg-transparent text-black p-12 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-gray-50 to-gray-100/30 -z-10" />
+
 
             <AnimatePresence>
                 {isStartingTrade && (

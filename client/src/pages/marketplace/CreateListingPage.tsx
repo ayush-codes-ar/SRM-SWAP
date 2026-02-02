@@ -43,7 +43,7 @@ const CreateListingPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 text-black p-6 flex justify-center">
+        <div className="min-h-screen bg-transparent text-black p-6 flex justify-center">
             <div className="w-full max-w-2xl">
                 <h1 className="text-3xl font-bold mb-6">List Item</h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -134,9 +134,9 @@ const CreateListingPage = () => {
                         </div>
                     )}
 
-                    <div className="bg-white/5 p-4 rounded-xl border border-white/10 flex items-center justify-between">
+                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 flex items-center justify-between">
                         <div>
-                            <h3 className="font-bold text-white">Hybrid Trade Mode</h3>
+                            <h3 className="font-bold text-black">Hybrid Trade Mode</h3>
                             <p className="text-xs text-gray-500 italic">I am open to partial money + partial barter deals</p>
                         </div>
                         <input

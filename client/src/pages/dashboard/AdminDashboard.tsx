@@ -54,7 +54,7 @@ const AdminDashboard = () => {
     if (loading) return <div className="text-white p-10">Admin access loading...</div>;
 
     return (
-        <div className="min-h-screen bg-gray-50 text-black p-10 space-y-16">
+        <div className="min-h-screen bg-transparent text-black p-10 space-y-16">
             <header className="flex justify-between items-center border-b border-gray-100 pb-10">
                 <h1 className="text-6xl font-black uppercase tracking-tighter text-black">Master Control</h1>
                 <div className="bg-black text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-xl">System Administrator</div>

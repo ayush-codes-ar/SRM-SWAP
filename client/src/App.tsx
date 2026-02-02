@@ -23,7 +23,7 @@ const AppContent = () => {
   const hideNavbar = location.pathname.startsWith('/member') || location.pathname.startsWith('/admin');
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 text-black overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-transparent text-black overflow-x-hidden">
       {!hideNavbar && <Navbar />}
       <main className="flex-1 relative z-0 pointer-events-auto">
         <AnimatePresence mode="wait">
