@@ -8,18 +8,24 @@ const router = Router();
 
 import fs from 'fs';
 
-// Configure local storage for images
-const uploadDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
 const storage = multer.diskStorage({
     destination: (req: any, file: any, cb: any) => {
+        const uploadDir = path.join(process.cwd(), 'uploads');
+        // Ensure directory exists (lazy creation)
+        if (!fs.existsSync(uploadDir)) {
+            try {
+                fs.mkdirSync(uploadDir, { recursive: true });
+                console.log(`Created upload directory: ${uploadDir}`);
+            } catch (err) {
+                console.error(`Failed to create upload directory: ${uploadDir}`, err);
+                return cb(err, uploadDir);
+            }
+        }
         cb(null, uploadDir);
     },
     filename: (req: any, file: any, cb: any) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+        const name = Date.now() + path.extname(file.originalname);
+        cb(null, name);
     },
 });
 
