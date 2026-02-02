@@ -32,7 +32,7 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
             onClick={onClick}
         >
             <Spotlight className="h-full flex flex-col" spotlightColor="rgba(37, 99, 235, 0.1)">
-                <div className="h-64 bg-gray-50 relative overflow-hidden">
+                <div className="h-48 bg-gray-50 relative overflow-hidden">
                     {item.images.length > 0 ? (
                         <motion.img
                             variants={{
@@ -49,13 +49,13 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                    <div className="absolute top-6 right-6 flex flex-col gap-2">
+                    <div className="absolute top-4 right-4 flex flex-col gap-2">
                         <motion.div
                             variants={{
                                 hover: { x: 0, opacity: 1 },
                                 initial: { x: 20, opacity: 0 }
                             }}
-                            className="bg-blue-600 px-4 py-2 rounded-full text-[10px] font-black text-white uppercase tracking-widest shadow-lg"
+                            className="bg-blue-600 px-3 py-1.5 rounded-full text-[8px] font-black text-white uppercase tracking-widest shadow-lg"
                         >
                             {item.type}
                         </motion.div>
@@ -65,7 +65,7 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
                                     hover: { x: 0, opacity: 1 },
                                     initial: { x: 20, opacity: 0 }
                                 }}
-                                className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-black text-blue-600 uppercase tracking-widest shadow-lg border border-blue-100"
+                                className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[8px] font-black text-blue-600 uppercase tracking-widest shadow-lg border border-blue-100"
                             >
                                 Hybrid
                             </motion.div>
@@ -73,19 +73,19 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
                     </div>
                 </div>
 
-                <div className="p-10 space-y-6 flex-1 bg-white relative">
+                <div className="p-5 space-y-4 flex-1 bg-white relative">
                     <div>
-                        <h3 className="text-2xl font-black text-black leading-[0.9] truncate tracking-tighter uppercase">{item.title}</h3>
+                        <h3 className="text-lg font-black text-black leading-[0.9] truncate tracking-tighter uppercase">{item.title}</h3>
                         <motion.div
                             variants={{
                                 hover: { y: 0, opacity: 1 },
                                 initial: { y: 10, opacity: 0.6 }
                             }}
-                            className="flex items-center text-[10px] font-black text-gray-400 mt-4 uppercase tracking-[0.2em]"
+                            className="flex items-center text-[10px] font-black text-gray-400 mt-2 uppercase tracking-[0.2em]"
                         >
                             <span className="truncate">{item.category}</span>
                             {item.seller.trustScore > 90 && (
-                                <div className="flex items-center ml-3 px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md">
+                                <div className="flex items-center ml-2 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-md">
                                     <BadgeCheck className="w-3 h-3 mr-1" />
                                     <span>TOP TIER</span>
                                 </div>
@@ -93,10 +93,10 @@ const ItemCard: React.FC<ItemProps> = ({ item, onClick }) => {
                         </motion.div>
                     </div>
 
-                    <div className="flex justify-between items-end pt-6 border-t border-gray-50 group-hover:border-blue-50 transition-colors mt-auto">
+                    <div className="flex justify-between items-end pt-4 border-t border-gray-50 group-hover:border-blue-50 transition-colors mt-auto">
                         <div className="space-y-1">
                             <span className="block text-[8px] font-black text-gray-300 uppercase tracking-widest">Market Value</span>
-                            <span className="text-3xl font-black text-black group-hover:text-blue-600 transition-colors">
+                            <span className="text-xl font-black text-black group-hover:text-blue-600 transition-colors">
                                 {item.price ? `₹${item.price}` : 'BARTER'}
                             </span>
                         </div>

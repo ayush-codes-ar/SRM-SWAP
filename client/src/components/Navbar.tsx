@@ -16,20 +16,20 @@ const Navbar = () => {
 
     // Navigation for Authenticated Users
     const authenticatedItems = [
-        { path: '/marketplace', label: 'Market', icon: <ShoppingBag size={18} />, activeColor: 'text-cyan-400' },
-        { path: '/create-listing', label: 'Sell', icon: <PlusCircle size={18} />, activeColor: 'text-cyan-400' },
-        { path: '/student', label: 'Dash', icon: <LayoutDashboard size={18} />, activeColor: 'text-cyan-400' },
-        { path: '/freshers', label: 'Freshers', icon: <Sparkles size={18} />, activeColor: 'text-cyan-400' },
-        { path: '/about', label: 'Know Your College', icon: <Globe size={18} />, activeColor: 'text-blue-400' },
+        { path: '/marketplace', label: 'Market', icon: <ShoppingBag size={22} />, activeColor: 'text-cyan-400' },
+        { path: '/create-listing', label: 'Sell', icon: <PlusCircle size={22} />, activeColor: 'text-cyan-400' },
+        { path: '/student', label: 'Dash', icon: <LayoutDashboard size={22} />, activeColor: 'text-cyan-400' },
+        { path: '/freshers', label: 'Freshers', icon: <Sparkles size={22} />, activeColor: 'text-cyan-400' },
+        { path: '/about', label: 'Know Your College', icon: <Globe size={22} />, activeColor: 'text-blue-400' },
     ];
 
     // Navigation for Landing / Auth Pages
     const landingItems = [
-        { path: '/', label: 'Home', icon: <HomeIcon size={18} /> },
-        { path: '/about', label: 'About', icon: <Info size={18} /> },
-        { path: '/how-it-works', label: 'How it works', icon: <Zap size={18} /> },
-        { path: '/features', label: 'Features', icon: <Sparkles size={18} /> },
-        { path: '/faq', label: 'FAQ', icon: <HelpCircle size={18} /> },
+        { path: '/', label: 'Home', icon: <HomeIcon size={22} /> },
+        { path: '/about', label: 'About', icon: <Info size={22} /> },
+        { path: '/how-it-works', label: 'How it works', icon: <Zap size={22} /> },
+        { path: '/features', label: 'Features', icon: <Sparkles size={22} /> },
+        { path: '/faq', label: 'FAQ', icon: <HelpCircle size={22} /> },
     ];
 
     const currentNavItems = showLandingNav ? landingItems : authenticatedItems;
@@ -57,7 +57,7 @@ const Navbar = () => {
                             className="flex items-center gap-2"
                         >
                             {item.icon}
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] hidden md:block">{item.label}</span>
+                            <span className="text-xs font-bold uppercase tracking-widest hidden md:block">{item.label}</span>
                         </motion.div>
                         <AnimatePresence>
                             {isActive(item.path) && (
@@ -72,8 +72,8 @@ const Navbar = () => {
 
                 {!showLandingNav && user?.role === 'MEMBER' && (
                     <Link to="/member" className={`flex items-center gap-2 transition-colors ${isActive('/member') ? 'text-yellow-600' : 'text-gray-400 hover:text-black'}`}>
-                        <HomeIcon size={18} />
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] hidden md:block">Super</span>
+                        <HomeIcon size={22} />
+                        <span className="text-xs font-bold uppercase tracking-widest hidden md:block">Super</span>
                     </Link>
                 )}
             </div>

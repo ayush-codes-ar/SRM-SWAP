@@ -26,17 +26,29 @@ const CreateListingPage = () => {
         try {
             let imageUrls: string[] = [];
             if (images.length > 0) {
-                imageUrls = await uploadImages(images);
+                console.log('Starting image upload...');
+                try {
+                    imageUrls = await uploadImages(images);
+                    console.log('Upload successful:', imageUrls);
+                } catch (uploadError) {
+                    console.error('Image upload failed:', uploadError);
+                    alert('Failed to upload images. Please try again.');
+                    setUploading(false);
+                    return;
+                }
             }
 
+            console.log('Creating item with data:', { ...formData, images: imageUrls });
             await createItem({
                 ...formData,
                 tags: formData.tags.split(',').map(t => t.trim()),
                 images: imageUrls
             });
+            console.log('Item created successfully');
             navigate('/marketplace');
         } catch (error) {
-            alert('Failed to create listing');
+            console.error('Create item failed:', error);
+            alert('Failed to create listing. Check console for details.');
         } finally {
             setUploading(false);
         }

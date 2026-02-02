@@ -15,6 +15,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ label, onChange }) => {
                 <span className="text-gray-500 text-sm">Click to upload or drag & drop</span>
                 <input
                     type="file"
+                    accept="image/png, image/jpeg, image/webp"
                     className="absolute inset-0 opacity-0 cursor-pointer"
                     onChange={(e) => onChange(e.target.files ? e.target.files[0] : null)}
                 />
