@@ -90,6 +90,16 @@ app.get('/', (req, res) => {
     res.send('Backend is live!');
 });
 
+// Global Error Handler
+app.use((err: any, req: any, res: any, next: any) => {
+    console.error('Unhandled Server Error:', err);
+    res.status(500).json({
+        error: 'Internal Server Error',
+        details: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+});
+
 // Start server unconditionally for Render
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
