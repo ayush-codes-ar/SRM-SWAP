@@ -47,9 +47,7 @@ export const useItemStore = create<ItemState>((set) => ({
     uploadImages: async (files) => {
         const formData = new FormData();
         files.forEach((file) => formData.append('images', file));
-        const res = await api.post('/items/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        const res = await api.post('/items/upload', formData);
         return res.data.urls;
     }
 }));
