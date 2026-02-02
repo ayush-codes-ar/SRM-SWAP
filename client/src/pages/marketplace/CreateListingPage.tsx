@@ -30,9 +30,10 @@ const CreateListingPage = () => {
                 try {
                     imageUrls = await uploadImages(images);
                     console.log('Upload successful:', imageUrls);
-                } catch (uploadError) {
+                } catch (uploadError: any) {
                     console.error('Image upload failed:', uploadError);
-                    alert('Failed to upload images. Please try again.');
+                    const errorMessage = uploadError.response?.data?.error || uploadError.message || 'Unknown upload error';
+                    alert(`Failed to upload images: ${errorMessage}`);
                     setUploading(false);
                     return;
                 }
