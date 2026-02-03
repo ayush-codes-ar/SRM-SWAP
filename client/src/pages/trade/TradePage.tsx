@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import RatingModal from '../../components/RatingModal';
 import DealProposalModal from '../../components/DealProposalModal';
 import Skeleton from '../../components/ui/Skeleton';
+import { getImageUrl } from '../../utils/imageUtils';
 
 const TradePage = () => {
     const { id } = useParams<{ id: string }>();
