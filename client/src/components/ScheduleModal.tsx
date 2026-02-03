@@ -32,10 +32,10 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ trade, onClose, onSchedul
             >
                 <div className="p-8 space-y-6">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-2">
+                        <h2 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-2 text-white">
                             <Calendar className="text-cyan-400" /> Schedule Trade
                         </h2>
-                        <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-gray-400">
+                        <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-gray-400 transition-colors">
                             <X size={24} />
                         </button>
                     </div>
@@ -46,11 +46,11 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ trade, onClose, onSchedul
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <p className="text-[10px] text-gray-500 uppercase font-bold">Money</p>
-                                <p className="text-lg font-bold">₹{trade.moneyProposal || 0}</p>
+                                <p className="text-lg font-bold text-white">₹{trade.moneyProposal || 0}</p>
                             </div>
                             <div>
                                 <p className="text-[10px] text-gray-500 uppercase font-bold">Item</p>
-                                <p className="text-lg font-bold truncate">{trade.listing.title}</p>
+                                <p className="text-lg font-bold text-white truncate">{trade.listing.title}</p>
                             </div>
                         </div>
                         <div className="space-y-2">
