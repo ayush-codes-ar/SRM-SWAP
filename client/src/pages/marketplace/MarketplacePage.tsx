@@ -12,18 +12,16 @@ const MarketplacePage = () => {
     const navigate = useNavigate();
     const [isStartingTrade, setIsStartingTrade] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        const load = async () => {
-            try {
-                await fetchItems({ marketplace: 'NORMAL' });
-            } catch (e) {
-                console.error("Failed to fetch items", e);
-                setError("Could not load marketplace. Please try again.");
-            }
-        };
-        load();
-    }, []); // Fixed: Empty dependency array to prevent infinite loop
+        const timeoutId = setTimeout(() => {
+            fetchItems({ marketplace: 'NORMAL', search: searchQuery });
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [searchQuery]);
+
+
 
     const handleItemClick = async (itemId: string) => {
         if (isStartingTrade) return;
@@ -103,6 +101,22 @@ const MarketplacePage = () => {
                 >
                     Acquisition potential for the SRM University community.
                 </motion.p>
+
+                {/* Search Bar */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="pt-8"
+                >
+                    <div className="relative max-w-xl">
+                        <input
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <div className="absolute right-6 top-1/2 -translate-y-1/2 w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
+                    </div>
+                </motion.div>
             </header>
 
             {error && (
