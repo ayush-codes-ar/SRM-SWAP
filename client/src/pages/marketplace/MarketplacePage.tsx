@@ -11,7 +11,7 @@ const MarketplacePage = () => {
     const { startTrade } = useTradeStore();
     const navigate = useNavigate();
     const [isStartingTrade, setIsStartingTrade] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -111,30 +111,18 @@ const MarketplacePage = () => {
                 >
                     <div className="relative max-w-xl">
                         <input
+                            type="text"
+                            placeholder="SEARCH ASSETS [TAGS / TITLE]..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-white/50 backdrop-blur-md border md:border-2 border-blue-100/50 rounded-full px-8 py-4 text-sm font-black uppercase tracking-widest text-black placeholder:text-gray-300 focus:outline-none focus:border-blue-600 transition-all shadow-sm"
                         />
                         <div className="absolute right-6 top-1/2 -translate-y-1/2 w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
                     </div>
                 </motion.div>
             </header>
 
-            {error && (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-24 border-2 border-red-200 rounded-[5rem] bg-red-50/30"
-                >
-                    <p className="text-red-600 font-black uppercase tracking-[0.3em] text-xs mb-4">System Malfunction</p>
-                    <p className="text-red-400 text-sm">{error}</p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="mt-6 px-6 py-3 bg-red-600 text-white rounded-full font-bold uppercase text-xs hover:bg-red-700 transition-colors"
-                    >
-                        Reboot Terminal
-                    </button>
-                </motion.div>
-            )}
+
 
             {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 relative z-10">
@@ -165,7 +153,7 @@ const MarketplacePage = () => {
                 </motion.div>
             )}
 
-            {!loading && !error && items && items.length === 0 && (
+            {!loading && items && items.length === 0 && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
