@@ -10,6 +10,7 @@ import FAQPage from './pages/info/FAQPage';
 import FeaturesPage, { HowItWorksPage } from './pages/info/LandingLegals';
 import FreshersSection from './pages/info/FreshersSection';
 import Navbar from './components/Navbar';
+import LandingPage from './pages/landing/LandingPage';
 
 import MarketplacePage from './pages/marketplace/MarketplacePage';
 import CreateListingPage from './pages/marketplace/CreateListingPage';
@@ -20,7 +21,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavbar = location.pathname.startsWith('/member') || location.pathname.startsWith('/admin');
+  const hideNavbar = location.pathname === '/' || location.pathname.startsWith('/member') || location.pathname.startsWith('/admin');
 
   return (
     <div className="flex flex-col min-h-screen bg-transparent text-black overflow-x-hidden">
@@ -41,7 +42,7 @@ const AppContent = () => {
             <Routes location={location} key={location.pathname}>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="/" element={<LandingPage />} />
               <Route path="/profile-setup" element={<ProfileSetupPage />} />
               <Route path="/marketplace" element={<MarketplacePage />} />
               <Route path="/create-listing" element={<CreateListingPage />} />
