@@ -1,364 +1,256 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Shield, MapPin, Repeat } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 // Import the calculator SVG
 import calculatorSvg from '../../assets/hero-calculator.svg';
 
-// Cinematic easing - no bounce, no elastic
-const smoothEase = [0.22, 1, 0.36, 1] as [number, number, number, number];
-
 const LandingPage = () => {
     const navigate = useNavigate();
+    const containerRef = useRef<HTMLDivElement>(null);
 
     return (
-        <div className="bg-white">
-            <HeroSection />
-            <ValueSection />
-            <HowItWorksSection />
-            <TrustSection />
+        <div ref={containerRef} className="bg-[#FAFAFA]">
+            {/* The Film - One continuous scroll experience */}
+            <FilmExperience />
+
+            {/* End CTA */}
             <CTASection onStart={() => navigate('/login')} />
         </div>
     );
 };
 
 // ============================================
-// SECTION 1: HERO - Apple Product Page Style
-// One idea: The product, front and center
+// THE FILM - Scroll-pinned cinematic experience
+// Item stays center, world changes around it
 // ============================================
-const HeroSection = () => {
-    const ref = useRef<HTMLDivElement>(null);
+const FilmExperience = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+
     const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start start", "end start"]
+        target: containerRef,
+        offset: ["start start", "end end"]
     });
 
-    // Camera-like parallax (item moves slower than scroll)
-    const itemY = useTransform(scrollYProgress, [0, 1], [0, 150]);
-    const itemScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
-    const itemOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-    const textY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+    // Scene boundaries (0-1 scroll progress)
+    // Scene 1: 0.00 - 0.25 (Unused)
+    // Scene 2: 0.25 - 0.50 (Listed)
+    // Scene 3: 0.50 - 0.75 (Discovered)
+    // Scene 4: 0.75 - 1.00 (Exchanged)
+
+    // Item transforms - minimal, physical movement
+    const itemScale = useTransform(scrollYProgress,
+        [0, 0.1, 0.25, 0.35, 0.5, 0.6, 0.75, 0.85, 1],
+        [0.9, 1, 1, 0.95, 0.95, 1, 1, 0.9, 0.85]
+    );
+    const itemY = useTransform(scrollYProgress,
+        [0, 0.25, 0.5, 0.75, 1],
+        [20, 0, 0, 0, 40]
+    );
+    const itemShadowOpacity = useTransform(scrollYProgress,
+        [0, 0.1, 0.5, 0.9, 1],
+        [0.05, 0.15, 0.15, 0.1, 0.05]
+    );
+
+    // Background depth - slow parallax
+    const bgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1.1]);
+
+    // Scene opacities - text replacement, one at a time
+    const scene1Opacity = useTransform(scrollYProgress, [0, 0.15, 0.22, 0.28], [0, 1, 1, 0]);
+    const scene2Opacity = useTransform(scrollYProgress, [0.22, 0.3, 0.47, 0.53], [0, 1, 1, 0]);
+    const scene3Opacity = useTransform(scrollYProgress, [0.47, 0.55, 0.72, 0.78], [0, 1, 1, 0]);
+    const scene4Opacity = useTransform(scrollYProgress, [0.72, 0.8, 0.95, 1], [0, 1, 1, 0.8]);
+
+    // UI card transforms (midground layer)
+    const cardOpacity = useTransform(scrollYProgress, [0.28, 0.35, 0.65, 0.72], [0, 1, 1, 0]);
+    const cardY = useTransform(scrollYProgress, [0.28, 0.35, 0.65, 0.72], [40, 0, 0, -40]);
+    const cardScale = useTransform(scrollYProgress, [0.28, 0.35], [0.95, 1]);
+
+    // Glow/highlight effects
+    const glowOpacity = useTransform(scrollYProgress, [0.45, 0.55, 0.65], [0, 0.6, 0]);
 
     return (
         <section
-            ref={ref}
-            className="h-screen flex flex-col items-center justify-center relative overflow-hidden"
+            ref={containerRef}
+            className="relative"
+            style={{ height: '400vh' }} // 4 scenes worth of scroll
         >
-            {/* Clean white background */}
-            <div className="absolute inset-0 bg-[#FAFAFA]" />
-
-            {/* Content - centered, minimal */}
-            <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
-                {/* Headline - Linear style: sharp, confident */}
-                <motion.h1
-                    style={{ y: textY }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-semibold text-[#0A0A0A] tracking-tight leading-[0.95]"
-                >
-                    Give it a
-                    <br />
-                    second life.
-                </motion.h1>
-
-                {/* Subhead - minimal */}
-                <motion.p
-                    style={{ y: textY }}
-                    className="mt-6 text-lg md:text-xl text-[#6B6B6B] max-w-md mx-auto"
-                >
-                    Trade items with verified students on your campus.
-                </motion.p>
-            </div>
-
-            {/* Product - Apple style: centered, hero treatment */}
-            <motion.div
-                style={{ y: itemY, scale: itemScale, opacity: itemOpacity }}
-                className="absolute bottom-32 left-1/2 -translate-x-1/2"
-            >
-                <img
-                    src={calculatorSvg}
-                    alt="Calculator"
-                    className="w-40 md:w-52 lg:w-64"
-                />
-                {/* Subtle reflection */}
-                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-2 bg-black/5 blur-xl rounded-full" />
-            </motion.div>
-
-            {/* Scroll hint - minimal */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+            {/* Sticky viewport - everything pins here */}
+            <div className="sticky top-0 h-screen overflow-hidden">
+                {/* BACKGROUND LAYER - Environment/gradients */}
                 <motion.div
-                    animate={{ y: [0, 6, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                    className="w-5 h-8 border border-[#D4D4D4] rounded-full flex justify-center pt-1.5"
+                    style={{ y: bgY, scale: bgScale }}
+                    className="absolute inset-0"
                 >
-                    <div className="w-1 h-1 bg-[#A3A3A3] rounded-full" />
-                </motion.div>
-            </div>
-        </section>
-    );
-};
-
-// ============================================
-// SECTION 2: VALUE - One idea: Why this matters
-// Stripe-style spacing and grid
-// ============================================
-const ValueSection = () => {
-    const ref = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "center center"]
-    });
-
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-    const y = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
-
-    return (
-        <section
-            ref={ref}
-            className="min-h-screen flex items-center py-32 bg-white"
-        >
-            <div className="max-w-6xl mx-auto px-6 w-full">
-                <motion.div style={{ opacity, y }}>
-                    {/* Section label */}
-                    <p className="text-xs font-medium text-[#0066FF] tracking-widest uppercase mb-6">
-                        The Problem
-                    </p>
-
-                    {/* Big statement - one idea */}
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-[#0A0A0A] tracking-tight leading-tight max-w-3xl">
-                        Every semester, students buy new.
-                        <span className="text-[#A3A3A3]"> Most of it sits unused.</span>
-                    </h2>
-
-                    {/* Stats grid - Stripe style */}
-                    <div className="mt-20 grid md:grid-cols-3 gap-1">
-                        {[
-                            { value: '₹2.4L+', label: 'Worth of items sitting idle on campus' },
-                            { value: '340kg', label: 'Potential waste reduction this year' },
-                            { value: '2 min', label: 'Average time to list an item' },
-                        ].map((stat, i) => (
-                            <motion.div
-                                key={stat.label}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.2 + i * 0.15, ease: smoothEase }}
-                                viewport={{ once: true }}
-                                className="p-8 bg-[#FAFAFA] first:rounded-l-2xl last:rounded-r-2xl"
-                            >
-                                <div className="text-3xl md:text-4xl font-semibold text-[#0A0A0A] tracking-tight">
-                                    {stat.value}
-                                </div>
-                                <div className="mt-2 text-sm text-[#6B6B6B]">
-                                    {stat.label}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </motion.div>
-            </div>
-        </section>
-    );
-};
-
-// ============================================
-// SECTION 3: HOW IT WORKS - Notion style storytelling
-// Clean steps, real product feel
-// ============================================
-const HowItWorksSection = () => {
-    const steps = [
-        {
-            number: '01',
-            title: 'List your item',
-            description: 'Take a photo, set your price or trade terms. Takes under 2 minutes.',
-        },
-        {
-            number: '02',
-            title: 'Get discovered',
-            description: 'Smart tags connect your item with students who need it.',
-        },
-        {
-            number: '03',
-            title: 'Meet on campus',
-            description: 'Exchange in person. Verified students only. No shipping needed.',
-        },
-    ];
-
-    return (
-        <section className="py-32 bg-[#FAFAFA]">
-            <div className="max-w-6xl mx-auto px-6">
-                {/* Section header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: smoothEase }}
-                    viewport={{ once: true }}
-                    className="max-w-2xl"
-                >
-                    <p className="text-xs font-medium text-[#0066FF] tracking-widest uppercase mb-6">
-                        How it works
-                    </p>
-                    <h2 className="text-4xl md:text-5xl font-semibold text-[#0A0A0A] tracking-tight">
-                        Simple by design.
-                    </h2>
+                    {/* Subtle gradient that shifts */}
+                    <motion.div
+                        className="absolute inset-0"
+                        style={{
+                            background: 'radial-gradient(ellipse at 50% 50%, rgba(245,245,245,1) 0%, rgba(250,250,250,1) 100%)'
+                        }}
+                    />
+                    {/* Ambient light spots */}
+                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-50/30 rounded-full blur-3xl" />
+                    <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-slate-100/40 rounded-full blur-3xl" />
                 </motion.div>
 
-                {/* Steps - clean grid */}
-                <div className="mt-20 grid md:grid-cols-3 gap-12">
-                    {steps.map((step, i) => (
-                        <motion.div
-                            key={step.number}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: i * 0.15, ease: smoothEase }}
-                            viewport={{ once: true }}
-                        >
-                            <div className="text-sm font-medium text-[#A3A3A3] mb-4">
-                                {step.number}
-                            </div>
-                            <h3 className="text-xl font-semibold text-[#0A0A0A] mb-3">
-                                {step.title}
-                            </h3>
-                            <p className="text-[#6B6B6B] leading-relaxed">
-                                {step.description}
-                            </p>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Product showcase - centered item */}
+                {/* MIDGROUND LAYER - UI Cards */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1, ease: smoothEase }}
-                    viewport={{ once: true }}
-                    className="mt-24 flex justify-center"
+                    style={{ opacity: cardOpacity, y: cardY, scale: cardScale }}
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 >
-                    <div className="bg-white rounded-2xl border border-[#E5E5E5] p-8 shadow-sm max-w-md w-full">
-                        <div className="flex items-start gap-5">
-                            <div className="w-20 h-24 bg-[#F5F5F5] rounded-xl flex items-center justify-center flex-shrink-0">
-                                <img src={calculatorSvg} alt="Calculator" className="w-14" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <h4 className="font-semibold text-[#0A0A0A]">Casio FX-991EX</h4>
-                                <p className="text-sm text-[#6B6B6B] mt-0.5">Scientific Calculator</p>
-                                <div className="flex items-baseline gap-2 mt-3">
-                                    <span className="text-xl font-semibold text-[#0A0A0A]">₹850</span>
-                                    <span className="text-sm text-[#A3A3A3] line-through">₹1,200</span>
-                                </div>
-                                <div className="flex gap-2 mt-4">
-                                    <span className="px-2.5 py-1 bg-[#F5F5F5] text-xs text-[#6B6B6B] rounded-md">Engineering</span>
-                                    <span className="px-2.5 py-1 bg-[#F5F5F5] text-xs text-[#6B6B6B] rounded-md">Like New</span>
-                                </div>
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 translate-x-32 md:translate-x-48">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-[#E5E5E5] p-5 shadow-lg w-56">
+                            <div className="text-xs text-[#A3A3A3] mb-2">Listed on SRM-SWAP</div>
+                            <div className="font-semibold text-[#0A0A0A]">Casio FX-991EX</div>
+                            <div className="text-sm text-[#6B6B6B] mt-1">₹850</div>
+                            <div className="flex gap-1.5 mt-3">
+                                <span className="px-2 py-0.5 bg-[#F5F5F5] text-[10px] text-[#6B6B6B] rounded">Engineering</span>
+                                <span className="px-2 py-0.5 bg-[#F5F5F5] text-[10px] text-[#6B6B6B] rounded">Like New</span>
                             </div>
                         </div>
                     </div>
                 </motion.div>
-            </div>
-        </section>
-    );
-};
 
-// ============================================
-// SECTION 4: TRUST - Airbnb style human trust
-// Stripe-level credibility
-// ============================================
-const TrustSection = () => {
-    const trustPoints = [
-        {
-            icon: Shield,
-            title: 'SRM Verified',
-            description: 'Every user verified with their official SRM email. No outsiders.',
-        },
-        {
-            icon: MapPin,
-            title: 'Campus Only',
-            description: 'Meet in familiar spots. No shipping, no strangers.',
-        },
-        {
-            icon: Repeat,
-            title: 'Fair Exchange',
-            description: 'Ratings and reviews keep the community accountable.',
-        },
-    ];
-
-    return (
-        <section className="py-32 bg-white">
-            <div className="max-w-6xl mx-auto px-6">
+                {/* Discovery glow effect */}
                 <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: smoothEase }}
-                    viewport={{ once: true }}
-                    className="text-center max-w-2xl mx-auto"
+                    style={{ opacity: glowOpacity }}
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 >
-                    <p className="text-xs font-medium text-[#0066FF] tracking-widest uppercase mb-6">
-                        Built on trust
-                    </p>
-                    <h2 className="text-4xl md:text-5xl font-semibold text-[#0A0A0A] tracking-tight">
-                        Trade with confidence.
-                    </h2>
+                    <div className="w-48 h-48 bg-blue-400/20 rounded-full blur-3xl" />
                 </motion.div>
 
-                {/* Trust grid */}
-                <div className="mt-20 grid md:grid-cols-3 gap-8">
-                    {trustPoints.map((point, i) => (
+                {/* FOREGROUND LAYER - The Item (pinned center) */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div
+                        style={{ scale: itemScale, y: itemY }}
+                        className="relative"
+                    >
+                        {/* Item shadow - physical grounding */}
                         <motion.div
-                            key={point.title}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: i * 0.1, ease: smoothEase }}
-                            viewport={{ once: true }}
-                            className="text-center p-8"
+                            style={{ opacity: itemShadowOpacity }}
+                            className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-28 h-3 bg-black rounded-full blur-xl"
+                        />
+                        {/* The calculator */}
+                        <img
+                            src={calculatorSvg}
+                            alt="Calculator"
+                            className="w-44 md:w-56 lg:w-64 relative z-10"
+                        />
+                    </motion.div>
+                </div>
+
+                {/* TEXT LAYER - One sentence at a time */}
+                <div className="absolute inset-0 flex items-end justify-center pb-24 md:pb-32 pointer-events-none">
+                    <div className="text-center max-w-xl px-6 relative h-20">
+                        {/* Scene 1: Unused */}
+                        <motion.p
+                            style={{ opacity: scene1Opacity }}
+                            className="absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-medium text-[#0A0A0A] tracking-tight"
                         >
-                            <div className="w-12 h-12 bg-[#F5F5F5] rounded-full flex items-center justify-center mx-auto mb-5">
-                                <point.icon className="w-5 h-5 text-[#0A0A0A]" strokeWidth={1.5} />
-                            </div>
-                            <h3 className="text-lg font-semibold text-[#0A0A0A] mb-2">
-                                {point.title}
-                            </h3>
-                            <p className="text-[#6B6B6B] text-sm leading-relaxed">
-                                {point.description}
-                            </p>
-                        </motion.div>
+                            Sitting unused. Still valuable.
+                        </motion.p>
+
+                        {/* Scene 2: Listed */}
+                        <motion.p
+                            style={{ opacity: scene2Opacity }}
+                            className="absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-medium text-[#0A0A0A] tracking-tight"
+                        >
+                            Listed in under a minute.
+                        </motion.p>
+
+                        {/* Scene 3: Discovered */}
+                        <motion.p
+                            style={{ opacity: scene3Opacity }}
+                            className="absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-medium text-[#0A0A0A] tracking-tight"
+                        >
+                            Found by who needs it.
+                        </motion.p>
+
+                        {/* Scene 4: Exchanged */}
+                        <motion.p
+                            style={{ opacity: scene4Opacity }}
+                            className="absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-medium text-[#0A0A0A] tracking-tight"
+                        >
+                            Exchanged on campus. Simple.
+                        </motion.p>
+                    </div>
+                </div>
+
+                {/* Progress indicator - subtle */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+                    {[0, 1, 2, 3].map((i) => (
+                        <SceneDot key={i} index={i} scrollYProgress={scrollYProgress} />
                     ))}
                 </div>
+
+                {/* Scroll hint - only in first scene */}
+                <motion.div
+                    style={{
+                        opacity: useTransform(scrollYProgress, [0, 0.05, 0.15], [1, 1, 0])
+                    }}
+                    className="absolute bottom-20 left-1/2 -translate-x-1/2"
+                >
+                    <motion.div
+                        animate={{ y: [0, 6, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        className="w-5 h-8 border border-[#D4D4D4] rounded-full flex justify-center pt-1.5"
+                    >
+                        <div className="w-1 h-1 bg-[#A3A3A3] rounded-full" />
+                    </motion.div>
+                </motion.div>
             </div>
         </section>
     );
 };
 
+// Scene progress dot
+const SceneDot = ({ index, scrollYProgress }: { index: number; scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'] }) => {
+    const sceneStart = index * 0.25;
+    const sceneEnd = (index + 1) * 0.25;
+
+    const opacity = useTransform(
+        scrollYProgress,
+        [sceneStart - 0.05, sceneStart, sceneEnd, sceneEnd + 0.05],
+        [0.3, 1, 1, 0.3]
+    );
+    const scale = useTransform(
+        scrollYProgress,
+        [sceneStart, sceneStart + 0.05, sceneEnd - 0.05, sceneEnd],
+        [1, 1.5, 1.5, 1]
+    );
+
+    return (
+        <motion.div
+            style={{ opacity, scale }}
+            className="w-1.5 h-1.5 bg-[#A3A3A3] rounded-full"
+        />
+    );
+};
+
 // ============================================
-// SECTION 5: CTA - Linear style: clean, confident
+// CTA - Clean ending
 // ============================================
 const CTASection = ({ onStart }: { onStart: () => void }) => {
     return (
         <section className="py-32 bg-[#0A0A0A]">
-            <div className="max-w-4xl mx-auto px-6 text-center">
+            <div className="max-w-3xl mx-auto px-6 text-center">
                 <motion.h2
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: smoothEase }}
-                    viewport={{ once: true }}
-                    className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight"
-                >
-                    Reuse smarter.
-                    <br />
-                    Trade locally.
-                </motion.h2>
-
-                <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: smoothEase }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true }}
-                    className="mt-6 text-[#A3A3A3] text-lg"
+                    className="text-3xl md:text-5xl font-semibold text-white tracking-tight"
                 >
-                    Join 1,200+ SRM students already on the platform.
-                </motion.p>
+                    Ready to give it a second life?
+                </motion.h2>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: smoothEase }}
+                    transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true }}
                     className="mt-10"
                 >
@@ -374,9 +266,9 @@ const CTASection = ({ onStart }: { onStart: () => void }) => {
                 <motion.p
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.4, ease: smoothEase }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     viewport={{ once: true }}
-                    className="mt-6 text-xs text-[#6B6B6B]"
+                    className="mt-6 text-sm text-[#6B6B6B]"
                 >
                     Free for all SRM students
                 </motion.p>
