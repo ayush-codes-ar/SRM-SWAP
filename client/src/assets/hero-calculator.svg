@@ -1,60 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none">
-  <!-- Calculator Body -->
-  <rect x="30" y="20" width="140" height="200" rx="16" fill="url(#bodyGradient)" stroke="#94A3B8" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" fill="none">
+  <!-- Realistic Calculator with depth and shadows -->
+  <defs>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="50%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="buttonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F5F9"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <filter id="bodyShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#64748B" flood-opacity="0.15"/>
+    </filter>
+    <filter id="buttonShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#64748B" flood-opacity="0.1"/>
+    </filter>
+    <filter id="screenGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#3B82F6" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Main Body -->
+  <rect x="30" y="20" width="180" height="240" rx="20" fill="url(#bodyGrad)" filter="url(#bodyShadow)"/>
+  <rect x="30" y="20" width="180" height="240" rx="20" stroke="#CBD5E1" stroke-width="1" fill="none"/>
   
   <!-- Screen -->
-  <rect x="45" y="35" width="110" height="50" rx="8" fill="#E0F2FE" stroke="#CBD5E1" stroke-width="1"/>
-  <text x="140" y="68" font-family="monospace" font-size="24" fill="#334155" text-anchor="end">42</text>
+  <rect x="45" y="35" width="150" height="60" rx="8" fill="url(#screenGrad)" filter="url(#screenGlow)"/>
+  <text x="180" y="75" font-family="SF Mono, Monaco, monospace" font-size="28" fill="#4ADE80" text-anchor="end" font-weight="500">1,247</text>
   
-  <!-- Button Grid -->
-  <!-- Row 1 -->
-  <rect x="45" y="100" width="22" height="22" rx="6" fill="#FEF3C7" stroke="#FDE68A"/>
-  <rect x="75" y="100" width="22" height="22" rx="6" fill="#FEF3C7" stroke="#FDE68A"/>
-  <rect x="105" y="100" width="22" height="22" rx="6" fill="#FEF3C7" stroke="#FDE68A"/>
-  <rect x="135" y="100" width="22" height="22" rx="6" fill="#FED7AA" stroke="#FDBA74"/>
+  <!-- Button Grid - Row 1 (Function) -->
+  <g filter="url(#buttonShadow)">
+    <rect x="45" y="110" width="32" height="28" rx="6" fill="#FEF3C7" stroke="#FCD34D" stroke-width="0.5"/>
+    <rect x="85" y="110" width="32" height="28" rx="6" fill="#FEF3C7" stroke="#FCD34D" stroke-width="0.5"/>
+    <rect x="125" y="110" width="32" height="28" rx="6" fill="#FEF3C7" stroke="#FCD34D" stroke-width="0.5"/>
+    <rect x="165" y="110" width="32" height="28" rx="6" fill="#FFEDD5" stroke="#FDBA74" stroke-width="0.5"/>
+  </g>
   
-  <!-- Row 2 -->
-  <rect x="45" y="130" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="75" y="130" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="105" y="130" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="135" y="130" width="22" height="22" rx="6" fill="#FED7AA" stroke="#FDBA74"/>
+  <!-- Button Grid - Row 2 -->
+  <g filter="url(#buttonShadow)">
+    <rect x="45" y="145" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="85" y="145" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="125" y="145" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="165" y="145" width="32" height="28" rx="6" fill="#FFEDD5" stroke="#FDBA74" stroke-width="0.5"/>
+  </g>
   
-  <!-- Row 3 -->
-  <rect x="45" y="160" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="75" y="160" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="105" y="160" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="135" y="160" width="22" height="22" rx="6" fill="#FED7AA" stroke="#FDBA74"/>
+  <!-- Button Grid - Row 3 -->
+  <g filter="url(#buttonShadow)">
+    <rect x="45" y="180" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="85" y="180" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="125" y="180" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="165" y="180" width="32" height="28" rx="6" fill="#FFEDD5" stroke="#FDBA74" stroke-width="0.5"/>
+  </g>
   
-  <!-- Row 4 -->
-  <rect x="45" y="190" width="52" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="105" y="190" width="22" height="22" rx="6" fill="#F1F5F9" stroke="#E2E8F0"/>
-  <rect x="135" y="190" width="22" height="22" rx="6" fill="#93C5FD" stroke="#60A5FA"/>
+  <!-- Button Grid - Row 4 -->
+  <g filter="url(#buttonShadow)">
+    <rect x="45" y="215" width="72" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="125" y="215" width="32" height="28" rx="6" fill="url(#buttonGrad)" stroke="#E2E8F0" stroke-width="0.5"/>
+    <rect x="165" y="215" width="32" height="28" rx="6" fill="url(#accentGrad)"/>
+  </g>
   
   <!-- Button Labels -->
-  <text x="56" y="115" font-family="sans-serif" font-size="10" fill="#92400E" text-anchor="middle">C</text>
-  <text x="86" y="115" font-family="sans-serif" font-size="10" fill="#92400E" text-anchor="middle">±</text>
-  <text x="116" y="115" font-family="sans-serif" font-size="10" fill="#92400E" text-anchor="middle">%</text>
-  <text x="146" y="115" font-family="sans-serif" font-size="10" fill="#9A3412" text-anchor="middle">÷</text>
+  <text x="61" y="128" font-family="Inter, system-ui" font-size="11" fill="#92400E" text-anchor="middle" font-weight="500">C</text>
+  <text x="101" y="128" font-family="Inter, system-ui" font-size="11" fill="#92400E" text-anchor="middle" font-weight="500">±</text>
+  <text x="141" y="128" font-family="Inter, system-ui" font-size="11" fill="#92400E" text-anchor="middle" font-weight="500">%</text>
+  <text x="181" y="128" font-family="Inter, system-ui" font-size="11" fill="#9A3412" text-anchor="middle" font-weight="500">÷</text>
   
-  <text x="56" y="145" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">7</text>
-  <text x="86" y="145" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">8</text>
-  <text x="116" y="145" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">9</text>
-  <text x="146" y="145" font-family="sans-serif" font-size="10" fill="#9A3412" text-anchor="middle">×</text>
+  <text x="61" y="163" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">7</text>
+  <text x="101" y="163" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">8</text>
+  <text x="141" y="163" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">9</text>
+  <text x="181" y="163" font-family="Inter, system-ui" font-size="11" fill="#9A3412" text-anchor="middle" font-weight="500">×</text>
   
-  <text x="56" y="175" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">4</text>
-  <text x="86" y="175" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">5</text>
-  <text x="116" y="175" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">6</text>
-  <text x="146" y="175" font-family="sans-serif" font-size="10" fill="#9A3412" text-anchor="middle">−</text>
+  <text x="61" y="198" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">4</text>
+  <text x="101" y="198" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">5</text>
+  <text x="141" y="198" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">6</text>
+  <text x="181" y="198" font-family="Inter, system-ui" font-size="11" fill="#9A3412" text-anchor="middle" font-weight="500">−</text>
   
-  <text x="71" y="205" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">0</text>
-  <text x="116" y="205" font-family="sans-serif" font-size="10" fill="#475569" text-anchor="middle">.</text>
-  <text x="146" y="205" font-family="sans-serif" font-size="10" fill="#1E40AF" text-anchor="middle">=</text>
-  
-  <!-- Gradient Definitions -->
-  <defs>
-    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFFFFF"/>
-      <stop offset="100%" style="stop-color:#F8FAFC"/>
-    </linearGradient>
-  </defs>
+  <text x="81" y="233" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">0</text>
+  <text x="141" y="233" font-family="Inter, system-ui" font-size="12" fill="#334155" text-anchor="middle" font-weight="500">.</text>
+  <text x="181" y="233" font-family="Inter, system-ui" font-size="12" fill="#FFFFFF" text-anchor="middle" font-weight="600">=</text>
 </svg>
